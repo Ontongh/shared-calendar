@@ -414,8 +414,8 @@
                 <div class="form-group">
                     <label for="event-user">参与方 *</label>
                     <select id="event-user" class="form-control">
-                        <option value="user1">仅我自己</option>
-                        <option value="user2">仅伙伴</option>
+                        <option value="user1">赵世斌</option>
+                        <option value="user2">吴静怡</option>
                         <option value="both" selected>双方参与</option>
                     </select>
                 </div>
@@ -582,13 +582,13 @@
             if (urlParams.has('partner')) {
                 currentUser = 'user2';
                 localStorage.setItem('isPartner', 'true');
-                document.getElementById('user1-name').textContent = '创建者';
+                document.getElementById('user1-name').textContent = '赵世斌';
                 document.getElementById('user2-name').textContent = '我';
             } else {
                 currentUser = 'user1';
                 localStorage.removeItem('isPartner');
                 document.getElementById('user1-name').textContent = '我';
-                document.getElementById('user2-name').textContent = '伙伴';
+                document.getElementById('user2-name').textContent = '吴静怡';
             }
         }
 
@@ -1277,5 +1277,6 @@
         }
     </script>
 </body>
+
 
 </html>
