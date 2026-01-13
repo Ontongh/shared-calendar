@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>双人共享日历</title>
-    
+
     <!-- FullCalendar CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         /* 简洁样式 */
         * {
@@ -17,20 +18,20 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Microsoft YaHei', sans-serif;
             background: #f5f7fa;
             color: #333;
             line-height: 1.6;
         }
-        
+
         .app-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         /* 头部 */
         .header {
             display: flex;
@@ -40,13 +41,13 @@
             margin-bottom: 20px;
             border-bottom: 2px solid #4a6fa5;
         }
-        
+
         .logo {
             font-size: 24px;
             font-weight: bold;
             color: #4a6fa5;
         }
-        
+
         /* 按钮 */
         .btn {
             padding: 10px 20px;
@@ -56,25 +57,34 @@
             font-size: 14px;
             transition: all 0.3s;
         }
-        
+
         .btn-primary {
             background: #4a6fa5;
             color: white;
         }
-        
+
         .btn-primary:hover {
             background: #166088;
         }
-        
+
+        .btn-warning {
+            background: #ffc107;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+
         .btn-danger {
             background: #dc3545;
             color: white;
         }
-        
+
         .btn-danger:hover {
             background: #c82333;
         }
-        
+
         /* 主内容 */
         .main-content {
             display: grid;
@@ -82,27 +92,54 @@
             gap: 20px;
             min-height: 700px;
         }
-        
+
         /* 侧边栏 */
         .sidebar {
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         /* 日历 */
         .calendar-container {
             background: white;
             border-radius: 8px;
             padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         #calendar {
             height: 600px;
         }
-        
+
+        /* 事件工具条 */
+        .event-toolbar {
+            display: none;
+            position: fixed;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            padding: 8px;
+            min-width: 160px;
+        }
+
+        .event-toolbar button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .event-toolbar button:hover {
+            background: #f8f9fa;
+        }
+
         /* 模态框 */
         .modal {
             display: none;
@@ -111,10 +148,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
         }
-        
+
         .modal-content {
             position: fixed;
             top: 50%;
@@ -125,20 +162,22 @@
             border-radius: 10px;
             min-width: 400px;
             max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
         }
-        
+
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-        
+
         .modal-title {
             font-size: 20px;
             color: #4a6fa5;
         }
-        
+
         .close-modal {
             background: none;
             border: none;
@@ -146,32 +185,45 @@
             cursor: pointer;
             color: #666;
         }
-        
+
         /* 表单 */
         .form-group {
             margin-bottom: 15px;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: 500;
         }
-        
+
         .form-control {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
-        
+
+        /* 重复选项 */
+        .repeat-options {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .repeat-end-options {
+            margin-top: 10px;
+        }
+
         /* 用户标识 */
         .user-badges {
             display: flex;
             gap: 15px;
             margin-bottom: 20px;
         }
-        
+
         .user-badge {
             display: flex;
             align-items: center;
@@ -179,15 +231,15 @@
             padding: 8px 12px;
             background: white;
             border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
-        
+
         .user-color {
             width: 16px;
             height: 16px;
             border-radius: 50%;
         }
-        
+
         /* 今日事件 */
         .today-event {
             padding: 8px;
@@ -195,26 +247,65 @@
             background: #f8f9fa;
             border-radius: 4px;
             border-left: 3px solid #4a6fa5;
+            position: relative;
         }
-        
+
+        .today-event-actions {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .event-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+
+        .event-action-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-btn {
+            color: #4a6fa5;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+        }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
-            
+
             .header {
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .modal-content {
                 min-width: 90%;
                 padding: 20px;
             }
+
+            .event-toolbar {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="app-container">
         <!-- 头部 -->
@@ -226,7 +317,7 @@
                 <i class="fas fa-plus"></i> 添加事件
             </button>
         </header>
-        
+
         <!-- 用户标识 -->
         <div class="user-badges">
             <div class="user-badge">
@@ -238,19 +329,19 @@
                 <span id="user2-name">伙伴</span>
             </div>
         </div>
-        
+
         <!-- 主内容区 -->
         <div class="main-content">
             <!-- 侧边栏 -->
             <aside class="sidebar">
                 <h3><i class="fas fa-tasks"></i> 今日日程</h3>
                 <div id="today-events">今天没有安排</div>
-                
+
                 <div style="margin-top: 30px;">
                     <h3><i class="fas fa-share-alt"></i> 邀请伙伴</h3>
                     <div style="margin-top: 10px;">
-                        <input type="text" id="share-link" class="form-control" readonly 
-                               value="正在生成链接..." style="margin-bottom: 10px;">
+                        <input type="text" id="share-link" class="form-control" readonly value="正在生成链接..."
+                            style="margin-bottom: 10px;">
                         <button class="btn btn-primary" onclick="copyShareLink()" style="width: 100%;">
                             <i class="fas fa-copy"></i> 复制分享链接
                         </button>
@@ -259,7 +350,7 @@
                         发送链接给伙伴，对方打开即可共享日历
                     </p>
                 </div>
-                
+
                 <!-- 清空数据按钮 -->
                 <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
                     <button class="btn btn-danger" onclick="clearAllData()" style="width: 100%;">
@@ -270,14 +361,20 @@
                     </p>
                 </div>
             </aside>
-            
+
             <!-- 日历主体 -->
             <main class="calendar-container">
                 <div id="calendar"></div>
             </main>
         </div>
     </div>
-    
+
+    <!-- 事件工具条 -->
+    <div id="event-toolbar" class="event-toolbar">
+        <button onclick="editEventFromToolbar()"><i class="fas fa-edit"></i> 编辑事件</button>
+        <button onclick="deleteEventFromToolbar()"><i class="fas fa-trash"></i> 删除事件</button>
+    </div>
+
     <!-- 事件表单模态框 -->
     <div id="event-modal" class="modal">
         <div class="modal-content">
@@ -287,58 +384,110 @@
                 </h3>
                 <button class="close-modal" onclick="hideEventModal()">&times;</button>
             </div>
-            
+
             <form id="eventForm" onsubmit="return false;">
                 <div class="form-group">
                     <label for="event-title">事件标题 *</label>
                     <input type="text" id="event-title" class="form-control" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="event-date">日期 *</label>
                     <input type="date" id="event-date" class="form-control" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="start-time">开始时间 *</label>
                     <input type="time" id="start-time" class="form-control" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="end-time">结束时间 *</label>
                     <input type="time" id="end-time" class="form-control" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="event-location">地点（可选）</label>
                     <input type="text" id="event-location" class="form-control">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="event-user">参与方 *</label>
                     <select id="event-user" class="form-control">
-                        <option value="user1">赵世斌</option>
-                        <option value="user2">吴静怡</option>
+                        <option value="user1">仅我自己</option>
+                        <option value="user2">仅伙伴</option>
                         <option value="both" selected>双方参与</option>
                     </select>
                 </div>
-                
+
+                <!-- 重复设置 -->
+                <div class="form-group">
+                    <label>重复</label>
+                    <select id="repeat-type" class="form-control" onchange="toggleRepeatOptions()">
+                        <option value="none" selected>不重复</option>
+                        <option value="daily">每天</option>
+                        <option value="weekly">每周</option>
+                        <option value="monthly">每月</option>
+                        <option value="weekdays">周一至周五</option>
+                        <option value="custom">自定义</option>
+                    </select>
+                </div>
+
+                <!-- 重复选项（默认隐藏） -->
+                <div id="repeat-options" class="repeat-options">
+                    <div id="custom-repeat" style="display: none;">
+                        <div class="form-group">
+                            <label>每</label>
+                            <input type="number" id="repeat-interval" min="1" value="1" class="form-control"
+                                style="width: 80px; display: inline;">
+                            <select id="repeat-frequency" class="form-control" style="width: auto; display: inline;">
+                                <option value="days">天</option>
+                                <option value="weeks">周</option>
+                                <option value="months">月</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="repeat-end-options">
+                        <label>重复结束于：</label>
+                        <div>
+                            <input type="radio" name="repeat-end" id="repeat-never" checked>
+                            <label for="repeat-never" style="display: inline; margin-right: 15px;">永不结束</label>
+                        </div>
+                        <div>
+                            <input type="radio" name="repeat-end" id="repeat-count">
+                            <label for="repeat-count" style="display: inline; margin-right: 15px;">
+                                在 <input type="number" id="repeat-times" min="1" value="10" style="width: 60px;"> 次后
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" name="repeat-end" id="repeat-date">
+                            <label for="repeat-date" style="display: inline;">
+                                直到 <input type="date" id="repeat-end-date" class="form-control"
+                                    style="width: 150px; display: inline;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
-                    <button type="button" class="btn btn-primary" style="flex: 1;" onclick="saveEvent()">
+                    <button type="button" class="btn btn-primary" style="flex: 1;" onclick="saveEvent()"
+                        id="save-button">
                         保存事件
                     </button>
-                    <button type="button" class="btn" style="flex: 1; background: #f8f9fa;" 
-                            onclick="hideEventModal()">
+                    <button type="button" class="btn" style="flex: 1; background: #f8f9fa;" onclick="hideEventModal()">
                         取消
                     </button>
                 </div>
-                
-                <!-- 编辑模式下的删除按钮 -->
+
+                <!-- 编辑模式下的操作 -->
                 <div id="edit-actions" style="display: none; margin-top: 15px;">
                     <hr>
-                    <button type="button" class="btn btn-danger" style="width: 100%;" onclick="deleteCurrentEvent()">
-                        <i class="fas fa-trash"></i> 删除此事件
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="btn btn-danger" style="flex: 1;" onclick="deleteCurrentEvent()">
+                            <i class="fas fa-trash"></i> 删除此事件
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -353,6 +502,20 @@
             </div>
             <div style="padding: 20px;">
                 <p id="delete-message">确定要删除这个事件吗？</p>
+                <div id="repeat-delete-options" style="display: none; margin: 15px 0;">
+                    <div>
+                        <input type="radio" name="delete-option" id="delete-this" checked>
+                        <label for="delete-this">仅删除此事件</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="delete-option" id="delete-all">
+                        <label for="delete-all">删除所有重复事件</label>
+                    </div>
+                    <div id="future-delete-option" style="display: none;">
+                        <input type="radio" name="delete-option" id="delete-future">
+                        <label for="delete-future">删除此事件及之后的所有重复</label>
+                    </div>
+                </div>
                 <div style="display: flex; gap: 10px; margin-top: 25px;">
                     <button class="btn btn-danger" style="flex: 1;" onclick="confirmDelete()">删除</button>
                     <button class="btn" style="flex: 1; background: #f8f9fa;" onclick="hideDeleteModal()">取消</button>
@@ -364,8 +527,9 @@
     <!-- 引入JS库 -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/zh-cn.js"></script>
-    
-    <!-- 简洁稳定的JavaScript代码 -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
+
+    <!-- JavaScript代码 -->
     <script>
         // ==================== 全局变量 ====================
         let calendar;
@@ -373,60 +537,65 @@
         let currentUser = 'user1'; // 默认创建者
         let editingEventId = null;
         let eventToDelete = null;
-        
+        let currentEventForToolbar = null;
+
         // ==================== 页面初始化 ====================
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('日历初始化...');
-            
+
             // 1. 设置用户身份
             setupUserIdentity();
-            
+
             // 2. 初始化日历
             initCalendar();
-            
+
             // 3. 加载已有事件
             loadEvents();
-            
+
             // 4. 更新今日事件显示
             updateTodayEvents();
-            
+
             // 5. 设置表单默认日期
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('event-date').value = today;
-            
+            document.getElementById('repeat-end-date').value = getDateOneMonthLater();
+
             // 6. 生成分享链接
             generateShareLink();
-            
+
+            // 7. 隐藏事件工具条
+            document.addEventListener('click', hideEventToolbar);
+
             console.log('初始化完成');
         });
-        
+
+        function getDateOneMonthLater() {
+            const date = new Date();
+            date.setMonth(date.getMonth() + 1);
+            return date.toISOString().split('T')[0];
+        }
+
         // ==================== 用户身份管理 ====================
         function setupUserIdentity() {
-            // 检查URL中是否有分享参数
             const urlParams = new URLSearchParams(window.location.search);
-            
+
             if (urlParams.has('partner')) {
-                // 通过分享链接访问的是伙伴
                 currentUser = 'user2';
                 localStorage.setItem('isPartner', 'true');
-                
-                // 更新界面显示
-                document.getElementById('user1-name').textContent = '赵世斌';
+                document.getElementById('user1-name').textContent = '创建者';
                 document.getElementById('user2-name').textContent = '我';
             } else {
-                // 直接访问的是创建者
                 currentUser = 'user1';
                 localStorage.removeItem('isPartner');
-                
                 document.getElementById('user1-name').textContent = '我';
-                document.getElementById('user2-name').textContent = '吴静怡';
+                document.getElementById('user2-name').textContent = '伙伴';
             }
         }
-        
+
         // ==================== 日历初始化 ====================
         function initCalendar() {
             const calendarEl = document.getElementById('calendar');
-            
+
             calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'timeGridWeek',
                 headerToolbar: {
@@ -440,72 +609,212 @@
                 allDaySlot: false,
                 editable: true,
                 selectable: true,
-                
+
                 // 点击空白处添加事件
-                select: function(info) {
+                select: function (info) {
                     showEventModal();
                     document.getElementById('event-date').value = info.startStr.split('T')[0];
                     document.getElementById('start-time').value = info.start.toTimeString().substr(0, 5);
                     document.getElementById('end-time').value = info.end.toTimeString().substr(0, 5);
                 },
-                
+
                 // 点击事件
-                eventClick: function(info) {
-                    // 直接显示删除选项
-                    if (confirm(`删除 "${info.event.title}" 吗？\n\n点击"确定"删除，点击"取消"取消`)) {
-                        deleteEventById(info.event.id);
+                eventClick: function (info) {
+                    // 存储当前点击的事件信息
+                    currentEventForToolbar = {
+                        id: info.event.id,
+                        jsEvent: info.jsEvent,
+                        event: info.event
+                    };
+
+                    // 显示工具条
+                    showEventToolbar(info.jsEvent);
+
+                    // 阻止默认行为
+                    info.jsEvent.preventDefault();
+                    info.jsEvent.stopPropagation(); // 添加这一行
+                },
+
+                // 拖拽事件
+                eventDrop: function (info) {
+                    const eventId = info.event.id;
+                    const event = events.find(e => e.id === eventId);
+
+                    if (event) {
+                        // 更新事件时间
+                        event.start = info.event.startStr;
+                        event.end = info.event.endStr;
+
+                        // 如果是重复事件的子事件，则转换为独立事件
+                        if (event.parentId) {
+                            event.parentId = null;
+                            // 添加独立事件标识
+                            event.isModifiedRecurring = true;
+                            event.originalParentId = event.parentId;
+                        }
+
+                        saveEvents();
+                        calendar.refetchEvents();
+                        updateTodayEvents();
                     }
                 },
-                
+
+                // 调整事件时间
+                eventResize: function (info) {
+                    const eventId = info.event.id;
+                    const event = events.find(e => e.id === eventId);
+
+                    if (event) {
+                        event.start = info.event.startStr;
+                        event.end = info.event.endStr;
+
+                        // 如果是重复事件的子事件，则转换为独立事件
+                        if (event.parentId) {
+                            event.parentId = null;
+                            // 添加独立事件标识
+                            event.isModifiedRecurring = true;
+                            event.originalParentId = event.parentId;
+                        }
+
+                        saveEvents();
+                        calendar.refetchEvents();
+                        updateTodayEvents();
+                    }
+                },
+
                 // 加载事件到日历
-                events: function(fetchInfo, successCallback) {
+                events: function (fetchInfo, successCallback) {
                     const filteredEvents = events.map(event => ({
                         id: event.id,
                         title: event.title + (event.location ? ` (${event.location})` : ''),
                         start: event.start,
                         end: event.end,
-                        color: getEventColor(event.user)
+                        color: getEventColor(event.user),
+                        extendedProps: {
+                            parentId: event.parentId,
+                            isRecurring: event.parentId || (event.repeat && event.repeat.type !== 'none')
+                        }
                     }));
-                    
+
                     successCallback(filteredEvents);
                 }
             });
-            
+
             calendar.render();
         }
-        
+
         function getEventColor(user) {
             if (user === 'user1') return '#4a6fa5';
             if (user === 'user2') return '#e85d75';
             return '#6c5ce7'; // 双方
         }
-        
+
+        // ==================== 事件工具条 ====================
+        function showEventToolbar(jsEvent) {
+            const toolbar = document.getElementById('event-toolbar');
+            if (!toolbar) return;
+
+            // 获取点击位置
+            const x = jsEvent.clientX;
+            const y = jsEvent.clientY;
+
+            // 显示工具条
+            toolbar.style.display = 'block';
+            toolbar.style.left = (x + 10) + 'px';
+            toolbar.style.top = (y + 10) + 'px';
+
+            // 防止工具条超出屏幕
+            const rect = toolbar.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                toolbar.style.left = (x - rect.width - 10) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                toolbar.style.top = (y - rect.height - 10) + 'px';
+            }
+        }
+
+        document.addEventListener('click', function (event) {
+            const toolbar = document.getElementById('event-toolbar');
+            if (toolbar && toolbar.style.display === 'block') {
+                // 如果点击的不是工具条本身
+                if (!toolbar.contains(event.target)) {
+                    toolbar.style.display = 'none';
+                }
+            }
+        });
+
+        function editEventFromToolbar() {
+            if (!currentEventForToolbar) return;
+
+            const eventId = currentEventForToolbar.id;
+            const event = events.find(e => e.id === eventId);
+
+            if (event) {
+                showEventModal(event);
+            }
+
+            hideEventToolbar({ target: null });
+        }
+
+        function deleteEventFromToolbar() {
+            if (!currentEventForToolbar) return;
+
+            const eventId = currentEventForToolbar.id;
+            const event = events.find(e => e.id === eventId);
+            const isRecurring = event && (event.parentId || (event.repeat && event.repeat.type !== 'none'));
+
+            showDeleteDialog(eventId, isRecurring);
+            hideEventToolbar({ target: null });
+        }
+
+        // ==================== 重复选项控制 ====================
+        function toggleRepeatOptions() {
+            const repeatType = document.getElementById('repeat-type').value;
+            const repeatOptions = document.getElementById('repeat-options');
+            const customRepeat = document.getElementById('custom-repeat');
+
+            if (repeatType === 'none') {
+                repeatOptions.style.display = 'none';
+            } else {
+                repeatOptions.style.display = 'block';
+
+                if (repeatType === 'custom') {
+                    customRepeat.style.display = 'block';
+                } else {
+                    customRepeat.style.display = 'none';
+                }
+            }
+        }
+
         // ==================== 事件管理 ====================
         function loadEvents() {
             const saved = localStorage.getItem('calendarEvents');
             if (saved) {
                 try {
                     events = JSON.parse(saved);
+                    // 生成重复事件
+                    generateAllRecurringEvents();
                 } catch (e) {
                     events = [];
                 }
             }
         }
-        
+
         function saveEvents() {
             localStorage.setItem('calendarEvents', JSON.stringify(events));
         }
-        
+
         // ==================== 事件表单 ====================
         function showEventModal(event = null) {
             resetEventForm();
-            
+
             if (event) {
                 // 编辑模式
                 editingEventId = event.id;
                 document.getElementById('modal-title').innerHTML = '<i class="fas fa-edit"></i> 编辑事件';
                 document.getElementById('edit-actions').style.display = 'block';
-                
+                document.getElementById('save-button').innerHTML = '<i class="fas fa-save"></i> 更新事件';
+
                 // 填充表单
                 document.getElementById('event-title').value = event.title || '';
                 document.getElementById('event-date').value = event.start.split('T')[0];
@@ -513,26 +822,60 @@
                 document.getElementById('end-time').value = event.end.split('T')[1].substr(0, 5);
                 document.getElementById('event-location').value = event.location || '';
                 document.getElementById('event-user').value = event.user || 'both';
+
+                // 如果是重复事件的子事件，显示警告
+                if (event.parentId && !event.isModifiedRecurring) {
+                    document.getElementById('event-title').value += ' (重复事件实例)';
+                    alert('提示：您正在编辑重复事件的一个实例。保存后此实例将变为独立事件。');
+                }
+
+                // 填充重复设置（仅适用于原始事件）
+                if (event.repeat && event.repeat.type !== 'none') {
+                    document.getElementById('repeat-type').value = event.repeat.type;
+                    toggleRepeatOptions();
+
+                    // 设置自定义重复选项
+                    if (event.repeat.type === 'custom') {
+                        document.getElementById('repeat-frequency').value = event.repeat.frequency || 'days';
+                        document.getElementById('repeat-interval').value = event.repeat.interval || 1;
+                    }
+
+                    // 设置结束条件
+                    if (event.repeat.endAfter) {
+                        document.getElementById('repeat-count').checked = true;
+                        document.getElementById('repeat-times').value = event.repeat.endAfter;
+                    } else if (event.repeat.endDate) {
+                        document.getElementById('repeat-date').checked = true;
+                        document.getElementById('repeat-end-date').value = event.repeat.endDate;
+                    } else {
+                        document.getElementById('repeat-never').checked = true;
+                    }
+                }
             } else {
                 // 添加模式
                 editingEventId = null;
                 document.getElementById('modal-title').innerHTML = '<i class="fas fa-calendar-plus"></i> 添加事件';
                 document.getElementById('edit-actions').style.display = 'none';
+                document.getElementById('save-button').innerHTML = '<i class="fas fa-save"></i> 保存事件';
             }
-            
+
             document.getElementById('event-modal').style.display = 'block';
         }
-        
+
         function hideEventModal() {
             document.getElementById('event-modal').style.display = 'none';
         }
-        
+
         function resetEventForm() {
             document.getElementById('eventForm').reset();
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('event-date').value = today;
+            document.getElementById('repeat-type').value = 'none';
+            document.getElementById('repeat-options').style.display = 'none';
+            document.getElementById('custom-repeat').style.display = 'none';
+            document.getElementById('repeat-never').checked = true;
         }
-        
+
         // ==================== 保存事件 ====================
         function saveEvent() {
             // 获取表单数据
@@ -542,18 +885,19 @@
             const endTime = document.getElementById('end-time').value;
             const location = document.getElementById('event-location').value.trim();
             const user = document.getElementById('event-user').value;
-            
+            const repeatType = document.getElementById('repeat-type').value;
+
             // 简单验证
             if (!title || !date || !startTime || !endTime) {
                 alert('请填写完整信息');
                 return;
             }
-            
+
             if (startTime >= endTime) {
                 alert('结束时间必须晚于开始时间');
                 return;
             }
-            
+
             // 创建事件对象
             const eventData = {
                 id: editingEventId || 'event_' + Date.now(),
@@ -561,67 +905,279 @@
                 start: date + 'T' + startTime,
                 end: date + 'T' + endTime,
                 location: location,
-                user: user
+                user: user,
+                updatedAt: new Date().toISOString()
             };
-            
+
+            // 处理重复设置
+            if (repeatType !== 'none') {
+                eventData.repeat = {
+                    type: repeatType,
+                    frequency: repeatType === 'custom' ? document.getElementById('repeat-frequency').value : repeatType,
+                    interval: repeatType === 'custom' ? parseInt(document.getElementById('repeat-interval').value) || 1 : 1
+                };
+
+                // 处理结束条件
+                if (document.getElementById('repeat-count').checked) {
+                    eventData.repeat.endAfter = parseInt(document.getElementById('repeat-times').value) || 10;
+                } else if (document.getElementById('repeat-date').checked) {
+                    eventData.repeat.endDate = document.getElementById('repeat-end-date').value;
+                }
+            }
+
             if (editingEventId) {
-                // 更新现有事件
+                // 编辑现有事件
                 const index = events.findIndex(e => e.id === editingEventId);
+                const originalEvent = events[index];
+
                 if (index !== -1) {
-                    events[index] = eventData;
+                    // 如果是重复事件的子事件，需要特殊处理
+                    if (originalEvent.parentId && !originalEvent.isModifiedRecurring) {
+                        // 创建新的独立事件
+                        events.push(eventData);
+                    } else {
+                        // 更新现有事件
+                        events[index] = eventData;
+
+                        // 如果是重复事件，需要删除旧的重复事件并重新生成
+                        if (originalEvent.parentId || (originalEvent.repeat && originalEvent.repeat.type !== 'none')) {
+                            const parentId = originalEvent.parentId || originalEvent.id;
+                            removeRecurringEvents(parentId);
+                        }
+                    }
                 }
             } else {
                 // 添加新事件
                 events.push(eventData);
             }
-            
+
+            // 生成重复事件
+            if (repeatType !== 'none') {
+                generateRecurringEvents(eventData);
+            }
+
             // 保存并更新
             saveEvents();
             calendar.refetchEvents();
             updateTodayEvents();
             hideEventModal();
-            
+
             alert('事件已保存');
         }
-        
-        // ==================== 删除事件 ====================
-        function deleteEventById(eventId) {
-            if (!confirm('确定要删除这个事件吗？')) {
+
+        // ==================== 生成重复事件 ====================
+        function generateAllRecurringEvents() {
+            // 找出所有需要生成重复的原始事件
+            const baseEvents = events.filter(event =>
+                event.repeat &&
+                event.repeat.type !== 'none' &&
+                !event.parentId &&
+                !event.isModifiedRecurring
+            );
+
+            // 删除所有现有的重复事件
+            events = events.filter(event => !event.parentId || event.isModifiedRecurring);
+
+            // 重新生成重复事件
+            baseEvents.forEach(event => {
+                generateRecurringEvents(event);
+            });
+
+            saveEvents();
+        }
+
+        function generateRecurringEvents(baseEvent) {
+            if (!baseEvent.repeat || baseEvent.repeat.type === 'none') {
                 return;
             }
-            
-            // 从数组中删除
-            const index = events.findIndex(e => e.id === eventId);
-            if (index !== -1) {
-                events.splice(index, 1);
-                
-                // 保存更改
-                saveEvents();
-                
-                // 从日历中移除
-                const calendarEvent = calendar.getEventById(eventId);
-                if (calendarEvent) {
-                    calendarEvent.remove();
-                } else {
-                    calendar.refetchEvents();
+
+            const repeat = baseEvent.repeat;
+            const baseStart = new Date(baseEvent.start);
+            const baseEnd = new Date(baseEvent.end);
+
+            let count = 0;
+            const maxCount = repeat.endAfter || 365; // 默认最多365次
+
+            while (count < maxCount) {
+                count++;
+
+                // 计算下一个日期
+                const nextStart = new Date(baseStart);
+                const nextEnd = new Date(baseEnd);
+
+                switch (repeat.type) {
+                    case 'daily':
+                        nextStart.setDate(baseStart.getDate() + (count * repeat.interval));
+                        nextEnd.setDate(baseEnd.getDate() + (count * repeat.interval));
+                        break;
+
+                    case 'weekly':
+                        nextStart.setDate(baseStart.getDate() + (7 * count * repeat.interval));
+                        nextEnd.setDate(baseEnd.getDate() + (7 * count * repeat.interval));
+                        break;
+
+                    case 'monthly':
+                        nextStart.setMonth(baseStart.getMonth() + (count * repeat.interval));
+                        nextEnd.setMonth(baseEnd.getMonth() + (count * repeat.interval));
+                        break;
+
+                    case 'weekdays':
+                        // 跳转到下一个工作日
+                        let daysAdded = count * repeat.interval;
+                        let tempDate = new Date(baseStart);
+                        tempDate.setDate(tempDate.getDate() + daysAdded);
+
+                        // 跳过周末
+                        while (tempDate.getDay() === 0 || tempDate.getDay() === 6) {
+                            daysAdded++;
+                            tempDate.setDate(tempDate.getDate() + 1);
+                        }
+
+                        nextStart.setDate(baseStart.getDate() + daysAdded);
+                        nextEnd.setDate(baseEnd.getDate() + daysAdded);
+                        break;
                 }
-                
-                // 更新今日事件
-                updateTodayEvents();
-                
-                alert('事件已删除');
+
+                // 检查是否超过结束日期
+                if (repeat.endDate && nextStart > new Date(repeat.endDate)) {
+                    break;
+                }
+
+                // 创建重复事件
+                const recurringEvent = {
+                    ...baseEvent,
+                    id: baseEvent.id + '_' + count,
+                    start: nextStart.toISOString(),
+                    end: nextEnd.toISOString(),
+                    parentId: baseEvent.id
+                };
+
+                delete recurringEvent.repeat; // 重复事件不需要重复设置
+
+                events.push(recurringEvent);
+
+                if (count >= maxCount) break;
             }
         }
-        
+
+        function removeRecurringEvents(parentId) {
+            events = events.filter(event => event.parentId !== parentId);
+        }
+
+        // ==================== 删除事件 ====================
+        function showDeleteDialog(eventId, isRecurring) {
+            eventToDelete = eventId;
+
+            const event = events.find(e => e.id === eventId);
+            const message = event
+                ? `确定要删除事件 "${event.title}" 吗？`
+                : `确定要删除这个事件吗？`;
+
+            document.getElementById('delete-message').textContent = message;
+
+            const repeatOptions = document.getElementById('repeat-delete-options');
+            const futureOption = document.getElementById('future-delete-option');
+
+            if (isRecurring) {
+                repeatOptions.style.display = 'block';
+
+                // 如果是重复事件系列的中间事件，显示"删除此事件及之后"选项
+                if (event && event.parentId && !event.id.endsWith('_1')) {
+                    futureOption.style.display = 'block';
+                } else {
+                    futureOption.style.display = 'none';
+                }
+            } else {
+                repeatOptions.style.display = 'none';
+            }
+
+            document.getElementById('delete-modal').style.display = 'block';
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('delete-modal').style.display = 'none';
+        }
+
+        function confirmDelete() {
+            const eventId = eventToDelete;
+
+            if (!eventId) {
+                hideDeleteModal();
+                return;
+            }
+
+            const event = events.find(e => e.id === eventId);
+            if (!event) {
+                hideDeleteModal();
+                return;
+            }
+
+            const deleteAll = document.getElementById('delete-all')?.checked;
+            const deleteFuture = document.getElementById('delete-future')?.checked;
+
+            if (deleteAll && (event.parentId || event.repeat)) {
+                // 删除所有重复事件
+                const parentId = event.parentId || event.id;
+                events = events.filter(e =>
+                    e.id !== parentId &&
+                    e.parentId !== parentId
+                );
+            } else if (deleteFuture && event.parentId) {
+                // 删除此事件及之后的所有重复事件
+                const eventIndex = parseInt(event.id.split('_').pop());
+                const parentId = event.parentId;
+
+                // 删除父事件
+                events = events.filter(e => e.id !== parentId);
+
+                // 删除所有序号大于等于当前事件的重复事件
+                events = events.filter(e => {
+                    if (e.parentId !== parentId) return true;
+                    const childIndex = parseInt(e.id.split('_').pop());
+                    return childIndex < eventIndex;
+                });
+
+                // 重新设置父事件的重复设置
+                const parentEvent = events.find(e => e.id === parentId);
+                if (parentEvent && parentEvent.repeat) {
+                    parentEvent.repeat.endAfter = eventIndex - 1;
+                }
+            } else {
+                // 删除单个事件
+                const index = events.findIndex(e => e.id === eventId);
+                if (index !== -1) {
+                    events.splice(index, 1);
+                }
+            }
+
+            // 保存更改
+            saveEvents();
+
+            // 从日历中移除
+            const calendarEvent = calendar.getEventById(eventId);
+            if (calendarEvent) {
+                calendarEvent.remove();
+            } else {
+                calendar.refetchEvents();
+            }
+
+            // 更新今日事件
+            updateTodayEvents();
+
+            hideDeleteModal();
+            alert('事件已删除');
+        }
+
         function deleteCurrentEvent() {
             if (!editingEventId) return;
-            
-            if (confirm('确定要删除这个事件吗？')) {
-                deleteEventById(editingEventId);
-                hideEventModal();
-            }
+
+            const event = events.find(e => e.id === editingEventId);
+            const isRecurring = event && (event.parentId || (event.repeat && event.repeat.type !== 'none'));
+
+            showDeleteDialog(editingEventId, isRecurring);
+            hideEventModal();
         }
-        
+
         // ==================== 今日事件 ====================
         function updateTodayEvents() {
             const today = new Date().toDateString();
@@ -629,78 +1185,97 @@
                 const eventDate = new Date(event.start).toDateString();
                 return eventDate === today;
             }).sort((a, b) => new Date(a.start) - new Date(b.start));
-            
+
             const container = document.getElementById('today-events');
-            
+
             if (todayEvents.length === 0) {
                 container.innerHTML = '<p style="color: #999;">今天没有安排</p>';
                 return;
             }
-            
+
             let html = '';
             todayEvents.forEach(event => {
                 const startTime = new Date(event.start).toTimeString().substr(0, 5);
                 const endTime = new Date(event.end).toTimeString().substr(0, 5);
-                
+                const isRecurring = event.parentId || (event.repeat && event.repeat.type !== 'none');
+                const isModified = event.isModifiedRecurring;
+
                 html += `
                     <div class="today-event">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-weight: bold; color: #4a6fa5;">${startTime} - ${endTime}</div>
-                                <div>${event.title}</div>
-                                ${event.location ? `<div style="font-size: 12px; color: #666;">? ${event.location}</div>` : ''}
+                        <div style="padding-right: 70px;">
+                            <div style="font-weight: bold; color: #4a6fa5;">
+                                ${startTime} - ${endTime}
+                                ${isRecurring ? ' <i class="fas fa-redo" style="color: #28a745; font-size: 12px;"></i>' : ''}
+                                ${isModified ? ' <i class="fas fa-exclamation-triangle" style="color: #ffc107; font-size: 12px;"></i>' : ''}
                             </div>
-                            <button onclick="deleteEventById('${event.id}')" 
-                                    style="background: none; border: none; color: #dc3545; cursor: pointer; padding: 5px;">
+                            <div style="font-weight: bold; margin: 5px 0;">${event.title}</div>
+                            ${event.location ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📍 ${event.location}</div>` : ''}
+                            <div style="font-size: 12px; color: #888;">
+                                ${event.user === 'user1' ? '仅我' : event.user === 'user2' ? '仅伙伴' : '双方'}参与
+                                ${event.updatedAt ? ' · 已更新' : ''}
+                            </div>
+                        </div>
+                        <div class="today-event-actions">
+                            <button class="event-action-btn edit-btn" onclick="editTodayEvent('${event.id}')" title="编辑">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="event-action-btn delete-btn" onclick="deleteTodayEvent('${event.id}', ${isRecurring})" title="删除">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </div>
                 `;
             });
-            
+
             container.innerHTML = html;
         }
-        
+
+        function editTodayEvent(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (event) {
+                showEventModal(event);
+            }
+        }
+
+        function deleteTodayEvent(eventId, isRecurring) {
+            showDeleteDialog(eventId, isRecurring);
+        }
+
         // ==================== 分享功能 ====================
         function generateShareLink() {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = baseUrl + '?partner';
             document.getElementById('share-link').value = shareUrl;
         }
-        
+
         function copyShareLink() {
             const input = document.getElementById('share-link');
             input.select();
             document.execCommand('copy');
             alert('链接已复制！发送给伙伴即可共享。');
         }
-        
+
         // ==================== 清空所有数据 ====================
         function clearAllData() {
-            if (!confirm('?? 警告：这将删除所有事件数据！\n\n确定要清空所有数据吗？')) {
+            if (!confirm('⚠️ 警告：这将删除所有事件数据！\n\n确定要清空所有数据吗？')) {
                 return;
             }
-            
+
             if (!confirm('最后确认：真的要删除所有数据吗？\n此操作不可撤销！')) {
                 return;
             }
-            
+
             // 清空所有数据
             events = [];
             localStorage.clear();
-            
+
             // 刷新显示
             calendar.refetchEvents();
             updateTodayEvents();
-            
+
             alert('所有数据已清空');
-        }
-        
-        // ==================== 工具函数 ====================
-        function showMessage(text) {
-            alert(text);
         }
     </script>
 </body>
+
 </html>
