@@ -1,30 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- 移动端优化 -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#4a6fa5">
-    
-    <!-- 桌面通知权限提示 -->
-    <meta name="notifications" content="yes">
-    
     <title>双人共享日历</title>
     
-    <!-- FullCalendar CSS -->
+    <!-- CSS链接 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
-    
-    <!-- Font Awesome 图标 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- 选择2 CSS（用于多选星期） -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    
     <style>
-        /* ========== 基础样式 ========== */
+        /* 基础样式 */
         * {
             margin: 0;
             padding: 0;
@@ -32,21 +21,19 @@
         }
         
         body {
-            font-family: "Microsoft YaHei", "Segoe UI", "PingFang SC", sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+            background: #f5f7fa;
             color: #333;
             line-height: 1.6;
-            min-height: 100vh;
         }
         
-        /* ========== 应用容器 ========== */
         .app-container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
         
-        /* ========== 头部样式 ========== */
+        /* 头部样式 */
         .header {
             display: flex;
             justify-content: space-between;
@@ -69,7 +56,7 @@
             font-size: 28px;
         }
         
-        /* ========== 视图标签 ========== */
+        /* 视图标签 */
         .view-tabs {
             display: flex;
             gap: 12px;
@@ -108,7 +95,7 @@
             transform: translateY(-1px);
         }
         
-        /* ========== 按钮样式 ========== */
+        /* 按钮样式 */
         .btn {
             padding: 12px 24px;
             border: none;
@@ -152,12 +139,7 @@
             box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
         }
         
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-        
-        /* ========== 用户标识 ========== */
+        /* 用户标识 */
         .user-badges {
             display: flex;
             gap: 20px;
@@ -192,14 +174,14 @@
             font-size: 16px;
         }
         
-        /* ========== 主内容区 ========== */
+        /* 主内容区 */
         .main-content {
             display: grid;
             grid-template-columns: 320px 1fr;
             gap: 25px;
         }
         
-        /* ========== 侧边栏 ========== */
+        /* 侧边栏 */
         .sidebar {
             background: white;
             border-radius: 15px;
@@ -216,7 +198,7 @@
             font-size: 18px;
         }
         
-        /* ========== 日历容器 ========== */
+        /* 日历容器 */
         .calendar-container {
             background: white;
             border-radius: 15px;
@@ -229,7 +211,7 @@
             height: 650px;
         }
         
-        /* ========== 事件表单 ========== */
+        /* 事件表单 */
         .event-form {
             display: none;
             position: fixed;
@@ -314,7 +296,7 @@
             height: 18px;
         }
         
-        /* ========== 重复设置区域 ========== */
+        /* 重复设置区域 */
         .repeat-options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -343,7 +325,7 @@
             border-color: #4a6fa5;
         }
         
-        /* ========== 自定义重复设置 ========== */
+        /* 自定义重复设置 */
         .custom-repeat {
             background: #f8f9fa;
             padding: 15px;
@@ -390,7 +372,7 @@
             border-color: #4a6fa5;
         }
         
-        /* ========== 提醒设置 ========== */
+        /* 提醒设置 */
         .reminder-options {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -419,7 +401,7 @@
             border-color: #4a6fa5;
         }
         
-        /* ========== 事件类型 ========== */
+        /* 事件类型 */
         .event-type-options {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -457,7 +439,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
         
-        /* ========== 今日事件 ========== */
+        /* 今日事件 */
         .today-event {
             padding: 15px;
             margin: 12px 0;
@@ -505,7 +487,7 @@
             margin-right: 5px;
         }
         
-        /* ========== 空闲时间段 ========== */
+        /* 空闲时间段 */
         .free-time-slots {
             margin-top: 20px;
         }
@@ -527,7 +509,7 @@
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
         }
         
-        /* ========== 分享区域 ========== */
+        /* 分享区域 */
         .share-area {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 20px;
@@ -546,7 +528,7 @@
             border-left: 4px solid #4a6fa5;
         }
         
-        /* ========== 消息提示 ========== */
+        /* 消息提示 */
         .message {
             position: fixed;
             top: 25px;
@@ -582,7 +564,7 @@
             background: rgba(220, 53, 69, 0.95);
         }
         
-        /* ========== 遮罩层 ========== */
+        /* 遮罩层 */
         #overlay {
             display: none;
             position: fixed;
@@ -595,7 +577,7 @@
             backdrop-filter: blur(5px);
         }
         
-        /* ========== 动画 ========== */
+        /* 动画 */
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -606,12 +588,7 @@
             to { transform: translateX(100%); opacity: 0; }
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* ========== 移动端响应式 ========== */
+        /* 移动端响应式 */
         @media (max-width: 1100px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -671,27 +648,7 @@
             }
         }
         
-        /* ========== 滚动条美化 ========== */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-        
-        /* ========== 事件类型颜色 ========== */
+        /* 事件类型颜色 */
         .event-type-schedule { color: #4a6fa5; }
         .event-type-course { color: #6c5ce7; }
         .event-type-exam { color: #e17055; }
@@ -703,24 +660,7 @@
         .event-type-sport { color: #00cec9; }
         .event-type-other { color: #636e72; }
         
-        /* ========== 工具类 ========== */
-        .hidden {
-            display: none !important;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        .mt-20 {
-            margin-top: 20px;
-        }
-        
-        .mb-20 {
-            margin-bottom: 20px;
-        }
-        
-        /* ========== 删除确认对话框 ========== */
+        /* 删除确认对话框 */
         .delete-dialog {
             position: fixed;
             top: 50%;
@@ -762,38 +702,9 @@
             border-color: #4a6fa5;
         }
         
-        /* ========== 事件操作按钮 ========== */
-        .event-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        
-        .event-action-btn {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s;
-        }
-        
-        .event-action-btn.edit {
-            background: #4a6fa5;
-            color: white;
-        }
-        
-        .event-action-btn.delete {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .event-action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        /* 隐藏类 */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -1203,1524 +1114,1303 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/zh-cn.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/advancedFormat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/weekday.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/plugin/relativeTime.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.7/locale/zh-cn.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
     <!-- 主JavaScript代码 -->
     <script>
-        // ==================== 初始化Day.js ====================
-        dayjs.extend(require('dayjs/plugin/advancedFormat'));
-        dayjs.extend(require('dayjs/plugin/weekday'));
-        dayjs.extend(require('dayjs/plugin/relativeTime'));
-        dayjs.locale('zh-cn');
+        // ==================== 初始化 ====================
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('双人共享日历初始化...');
+    
+    initUserIdentity();
+    initCalendar();
+    loadEvents();
+    updateTodayEvents();
+    setupFormDefaults();
+    generateShareLink();
+    initEventTypeSelection();
+    initReminderSystem();
+    
+    console.log('初始化完成，当前用户:', currentUser);
+    requestNotificationPermission();
+});
 
-        // ==================== 全局变量 ====================
-        let calendar;
-        let events = [];
-        let currentUser = 'user1';
-        let editingEventId = null;
-        let notificationPermission = Notification.permission;
+// ==================== 全局变量 ====================
+let calendar;
+let events = [];
+let currentUser = 'user1';
+let editingEventId = null;
+let notificationPermission = Notification.permission;
+
+const EVENT_TYPES = {
+    schedule: { name: '日程', icon: 'calendar-day', color: '#4a6fa5' },
+    course: { name: '课程', icon: 'book', color: '#6c5ce7' },
+    exam: { name: '考试', icon: 'file-alt', color: '#e17055' },
+    homework: { name: '作业', icon: 'tasks', color: '#00b894' },
+    meeting: { name: '会议', icon: 'users', color: '#fd79a8' },
+    birthday: { name: '生日', icon: 'birthday-cake', color: '#e84393' },
+    anniversary: { name: '纪念日', icon: 'heart', color: '#0984e3' },
+    countdown: { name: '倒数日', icon: 'hourglass-half', color: '#fdcb6e' },
+    sport: { name: '运动', icon: 'running', color: '#00cec9' },
+    other: { name: '其他', icon: 'ellipsis-h', color: '#636e72' }
+};
+
+// ==================== 用户身份管理 ====================
+function initUserIdentity() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('partner')) {
+        currentUser = 'user2';
+        localStorage.setItem('isPartner', 'true');
+    } else if (localStorage.getItem('isPartner') === 'true') {
+        currentUser = 'user2';
+    } else {
+        currentUser = 'user1';
+        localStorage.removeItem('isPartner');
+    }
+    
+    localStorage.setItem('currentUser', currentUser);
+    updateUIForUserRole();
+}
+
+function updateUIForUserRole() {
+    const isPartner = currentUser === 'user2';
+    const pageTitle = document.getElementById('page-title');
+    const user1Name = document.getElementById('user1-name');
+    const user2Name = document.getElementById('user2-name');
+    const shareHint = document.getElementById('share-hint');
+    
+    if (isPartner) {
+        pageTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> 共享日历（伙伴）';
+        user1Name.textContent = '创建者';
+        user2Name.textContent = '我';
+        shareHint.innerHTML = '<i class="fas fa-check-circle"></i> 您已作为伙伴加入共享日历';
+        shareHint.style.color = '#28a745';
+    } else {
+        pageTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> 双人共享日历';
+        user1Name.textContent = '我';
+        user2Name.textContent = '伙伴';
+        shareHint.innerHTML = '<i class="fas fa-info-circle"></i> 您是日历创建者，可以邀请一位伙伴共享日历';
+        shareHint.style.color = '#166088';
+    }
+}
+
+// ==================== 日历初始化 ====================
+function initCalendar() {
+    const calendarEl = document.getElementById('calendar');
+    
+    calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        locale: 'zh-cn',
+        slotMinTime: '00:00',
+        slotMaxTime: '24:00',
+        slotDuration: '00:30:00',
+        allDaySlot: true,
+        editable: true,
+        selectable: true,
+        selectMirror: true,
+        dayMaxEvents: true,
+        eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
         
-        // 事件类型配置
-        const EVENT_TYPES = {
-            schedule: { name: '日程', icon: 'calendar-day', color: '#4a6fa5' },
-            course: { name: '课程', icon: 'book', color: '#6c5ce7' },
-            exam: { name: '考试', icon: 'file-alt', color: '#e17055' },
-            homework: { name: '作业', icon: 'tasks', color: '#00b894' },
-            meeting: { name: '会议', icon: 'users', color: '#fd79a8' },
-            birthday: { name: '生日', icon: 'birthday-cake', color: '#e84393' },
-            anniversary: { name: '纪念日', icon: 'heart', color: '#0984e3' },
-            countdown: { name: '倒数日', icon: 'hourglass-half', color: '#fdcb6e' },
-            sport: { name: '运动', icon: 'running', color: '#00cec9' },
-            other: { name: '其他', icon: 'ellipsis-h', color: '#636e72' }
-        };
+        select: function(info) {
+            showEventForm();
+            document.getElementById('event-date').value = info.startStr.split('T')[0];
+            
+            if (info.allDay) {
+                document.getElementById('is-all-day').checked = true;
+                toggleAllDayEvent();
+            } else {
+                document.getElementById('start-time').value = formatTime(info.start);
+                document.getElementById('end-time').value = formatTime(info.end);
+            }
+        },
+        
+        eventClick: function(info) {
+            showEventActionDialog(info.event);
+        },
+        
+        eventDrop: function(info) {
+            updateEventInStorage(info.event);
+            showMessage('事件时间已更新', 'success');
+        },
+        
+        eventResize: function(info) {
+            updateEventInStorage(info.event);
+            showMessage('事件时长已更新', 'success');
+        },
+        
+        events: function(fetchInfo, successCallback) {
+            const filteredEvents = getFilteredEvents(fetchInfo.start, fetchInfo.end);
+            successCallback(filteredEvents);
+        },
+        
+        eventDidMount: function(info) {
+            const eventType = info.event.extendedProps.type || 'schedule';
+            const user = info.event.extendedProps.user;
+            let color = EVENT_TYPES[eventType].color;
+            
+            if (user === 'user1' && currentUser === 'user2') {
+                color = adjustColor(color, -20);
+            } else if (user === 'user2' && currentUser === 'user1') {
+                color = adjustColor(color, 20);
+            }
+            
+            info.el.style.backgroundColor = color;
+            info.el.style.borderColor = color;
+            info.el.style.color = getContrastColor(color);
+            info.el.style.borderRadius = '6px';
+            info.el.style.padding = '2px 4px';
+            info.el.setAttribute('data-event-id', info.event.id);
+        }
+    });
+    
+    calendar.render();
+}
 
-        // ==================== 页面初始化 ====================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('双人共享日历初始化...');
-            
-            // 1. 初始化用户身份
-            initUserIdentity();
-            
-            // 2. 初始化日历
-            initCalendar();
-            
-            // 3. 加载事件
-            loadEvents();
-            
-            // 4. 更新今日事件
-            updateTodayEvents();
-            
-            // 5. 设置表单默认值
-            setupFormDefaults();
-            
-            // 6. 生成分享链接
-            generateShareLink();
-            
-            // 7. 初始化事件类型选择
-            initEventTypeSelection();
-            
-            // 8. 初始化提醒系统
-            initReminderSystem();
-            
-            console.log('初始化完成，当前用户:', currentUser);
-            
-            // 9. 检查通知权限
-            requestNotificationPermission();
+// ==================== 事件类型选择初始化 ====================
+function initEventTypeSelection() {
+    const typeOptions = document.querySelectorAll('.event-type-option');
+    typeOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            typeOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            document.getElementById('event-type').value = this.getAttribute('data-type');
         });
+    });
+    
+    if (typeOptions.length > 0) {
+        typeOptions[0].click();
+    }
+}
 
-        // ==================== 用户身份管理 ====================
-        function initUserIdentity() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            if (urlParams.has('partner')) {
-                currentUser = 'user2';
-                localStorage.setItem('isPartner', 'true');
-                console.log('检测到分享链接，设置为伙伴角色');
-            } else if (localStorage.getItem('isPartner') === 'true') {
-                currentUser = 'user2';
-                console.log('从本地存储恢复伙伴角色');
-            } else {
-                currentUser = 'user1';
-                localStorage.removeItem('isPartner');
+// ==================== 事件管理 ====================
+function loadEvents() {
+    const saved = localStorage.getItem('sharedCalendarEvents');
+    if (saved) {
+        try {
+            events = JSON.parse(saved);
+            console.log('加载了', events.length, '个事件');
+            scheduleAllReminders();
+        } catch (e) {
+            console.error('加载事件失败:', e);
+            events = [];
+        }
+    } else {
+        events = [];
+    }
+}
+
+function saveEvents() {
+    localStorage.setItem('sharedCalendarEvents', JSON.stringify(events));
+    localStorage.setItem('lastUpdate', Date.now().toString());
+}
+
+function getFilteredEvents(start, end) {
+    const viewType = document.querySelector('.tab-btn.active').textContent;
+    
+    const filtered = events.filter(event => {
+        const eventStart = new Date(event.start);
+        const eventEnd = new Date(event.end);
+        if (eventEnd < start || eventStart > end) return false;
+        
+        if (viewType.includes('我的')) {
+            return event.user === currentUser || event.user === 'both';
+        }
+        return true;
+    });
+
+    return filtered.map(event => {
+        const eventType = event.type || 'schedule';
+        const isRecurring = event.recurrence && event.recurrence.type !== 'none';
+        
+        return {
+            id: event.id,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay || false,
+            extendedProps: {
+                user: event.user,
+                type: eventType,
+                location: event.location || '',
+                description: event.description || '',
+                recurrence: event.recurrence || { type: 'none' },
+                reminders: event.reminders || [],
+                isRecurring: isRecurring,
+                originalEventId: event.originalEventId || event.id
+            },
+            backgroundColor: EVENT_TYPES[eventType].color,
+            borderColor: EVENT_TYPES[eventType].color
+        };
+    });
+}
+
+// ==================== 事件表单操作 ====================
+function showEventForm(eventId = null) {
+    resetEventForm();
+    
+    if (eventId) {
+        const event = events.find(e => e.id === eventId);
+        if (event) {
+            fillEventForm(event);
+            document.getElementById('form-title').textContent = '编辑事件';
+            document.getElementById('edit-mode').value = 'edit';
+            document.getElementById('event-id').value = eventId;
+            document.getElementById('delete-event-btn').classList.remove('hidden');
+        }
+    } else {
+        document.getElementById('form-title').textContent = '添加事件';
+        document.getElementById('edit-mode').value = 'add';
+        document.getElementById('delete-event-btn').classList.add('hidden');
+        
+        if (currentUser === 'user2') {
+            document.getElementById('event-user').value = 'user2';
+        }
+    }
+    
+    document.getElementById('event-form').style.display = 'block';
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function hideEventForm() {
+    document.getElementById('event-form').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function resetEventForm() {
+    document.getElementById('eventForm').reset();
+    setupFormDefaults();
+    
+    document.querySelectorAll('.event-type-option').forEach(opt => opt.classList.remove('selected'));
+    document.querySelector('.event-type-option[data-type="schedule"]').classList.add('selected');
+    document.getElementById('event-type').value = 'schedule';
+    
+    document.querySelectorAll('.repeat-option').forEach(opt => opt.classList.remove('selected'));
+    document.querySelector('.repeat-option[data-repeat="none"]').classList.add('selected');
+    document.getElementById('custom-repeat-section').classList.add('hidden');
+    document.getElementById('repeat-type').value = 'none';
+    
+    document.querySelectorAll('.reminder-option').forEach(opt => opt.classList.remove('selected'));
+    document.getElementById('custom-reminder-section').classList.add('hidden');
+    document.getElementById('selected-reminders').value = '[]';
+    
+    document.getElementById('delete-event-btn').classList.add('hidden');
+    document.getElementById('edit-mode').value = 'add';
+}
+
+function setupFormDefaults() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('event-date').value = today;
+    
+    const now = new Date();
+    const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
+    nextHour.setMinutes(0, 0, 0);
+    
+    document.getElementById('start-time').value = formatTime(nextHour);
+    
+    const endTime = new Date(nextHour.getTime() + 60 * 60 * 1000);
+    document.getElementById('end-time').value = formatTime(endTime);
+    
+    document.getElementById('end-date').value = today;
+    
+    const nextMonth = new Date();
+    nextMonth.setMonth(nextMonth.getMonth() + 1);
+    document.getElementById('repeat-end-date').value = nextMonth.toISOString().split('T')[0];
+}
+
+function toggleAllDayEvent() {
+    const isAllDay = document.getElementById('is-all-day').checked;
+    const startTimeGroup = document.getElementById('start-time-group');
+    const endTimeGroup = document.getElementById('end-time-group');
+    const endDateGroup = document.getElementById('end-date-group');
+    
+    if (isAllDay) {
+        startTimeGroup.style.display = 'none';
+        endTimeGroup.style.display = 'none';
+        endDateGroup.style.display = 'block';
+        const startDate = document.getElementById('event-date').value;
+        document.getElementById('end-date').value = startDate;
+    } else {
+        startTimeGroup.style.display = 'block';
+        endTimeGroup.style.display = 'block';
+        endDateGroup.style.display = 'none';
+    }
+}
+
+// ==================== 重复设置函数 ====================
+function selectRepeatOption(type) {
+    document.querySelectorAll('.repeat-option').forEach(opt => opt.classList.remove('selected'));
+    document.querySelector(`.repeat-option[data-repeat="${type}"]`).classList.add('selected');
+    document.getElementById('repeat-type').value = type;
+    
+    if (type === 'custom') {
+        document.getElementById('custom-repeat-section').classList.remove('hidden');
+    } else {
+        document.getElementById('custom-repeat-section').classList.add('hidden');
+    }
+}
+
+function toggleCustomRepeatOptions() {
+    const frequency = document.getElementById('repeat-frequency').value;
+    
+    document.getElementById('weekly-options').classList.add('hidden');
+    document.getElementById('monthly-options').classList.add('hidden');
+    document.getElementById('yearly-options').classList.add('hidden');
+    
+    if (frequency === 'weeks') {
+        document.getElementById('weekly-options').classList.remove('hidden');
+    } else if (frequency === 'months') {
+        document.getElementById('monthly-options').classList.remove('hidden');
+    } else if (frequency === 'years') {
+        document.getElementById('yearly-options').classList.remove('hidden');
+    }
+}
+
+function toggleWeekday(element) {
+    element.classList.toggle('selected');
+    const weekdays = [];
+    document.querySelectorAll('.weekday-option.selected').forEach(opt => {
+        weekdays.push(parseInt(opt.getAttribute('data-day')));
+    });
+    document.getElementById('selected-weekdays').value = JSON.stringify(weekdays);
+}
+
+function toggleRepeatEndOptions() {
+    const endType = document.getElementById('repeat-end-type').value;
+    
+    document.getElementById('repeat-end-date-group').classList.add('hidden');
+    document.getElementById('repeat-count-group').classList.add('hidden');
+    
+    if (endType === 'date') {
+        document.getElementById('repeat-end-date-group').classList.remove('hidden');
+    } else if (endType === 'count') {
+        document.getElementById('repeat-count-group').classList.remove('hidden');
+    }
+}
+
+// ==================== 提醒设置函数 ====================
+function selectReminder(value) {
+    document.querySelectorAll('.reminder-option').forEach(opt => opt.classList.remove('selected'));
+    
+    if (value === 'custom') {
+        document.querySelector('.reminder-option[data-minutes="custom"]').classList.add('selected');
+        document.getElementById('custom-reminder-section').classList.remove('hidden');
+    } else {
+        const option = document.querySelector(`.reminder-option[data-minutes="${value}"]`);
+        if (option) option.classList.add('selected');
+        document.getElementById('custom-reminder-section').classList.add('hidden');
+        
+        const reminders = [{ minutes: value, custom: false }];
+        document.getElementById('selected-reminders').value = JSON.stringify(reminders);
+    }
+}
+
+// ==================== 保存事件 ====================
+function saveEvent() {
+    const eventId = document.getElementById('event-id').value || 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    const title = document.getElementById('event-title').value.trim();
+    const type = document.getElementById('event-type').value;
+    const user = document.getElementById('event-user').value;
+    const location = document.getElementById('event-location').value.trim();
+    const description = document.getElementById('event-description').value.trim();
+    const isAllDay = document.getElementById('is-all-day').checked;
+    const date = document.getElementById('event-date').value;
+    const startTime = document.getElementById('start-time').value;
+    const endTime = document.getElementById('end-time').value;
+    const endDate = document.getElementById('end-date').value;
+    
+    if (!title) {
+        showMessage('请输入事件标题', 'warning');
+        document.getElementById('event-title').focus();
+        return;
+    }
+    
+    if (!date) {
+        showMessage('请选择日期', 'warning');
+        return;
+    }
+    
+    if (!isAllDay && (!startTime || !endTime)) {
+        showMessage('请选择时间', 'warning');
+        return;
+    }
+    
+    if (isAllDay && date > endDate) {
+        showMessage('结束日期不能早于开始日期', 'warning');
+        return;
+    }
+    
+    if (!isAllDay && startTime >= endTime) {
+        showMessage('结束时间必须晚于开始时间', 'warning');
+        return;
+    }
+    
+    let start, end;
+    if (isAllDay) {
+        start = date + 'T00:00:00';
+        end = endDate + 'T23:59:59';
+    } else {
+        start = date + 'T' + startTime + ':00';
+        end = date + 'T' + endTime + ':00';
+    }
+    
+    const repeatType = document.getElementById('repeat-type').value;
+    let recurrence = { type: repeatType };
+    
+    if (repeatType === 'custom') {
+        recurrence = {
+            type: 'custom',
+            interval: parseInt(document.getElementById('repeat-interval').value) || 1,
+            frequency: document.getElementById('repeat-frequency').value,
+            endType: document.getElementById('repeat-end-type').value
+        };
+        
+        if (recurrence.frequency === 'weeks') {
+            const weekdays = JSON.parse(document.getElementById('selected-weekdays').value || '[]');
+            if (weekdays.length === 0) {
+                showMessage('请至少选择一个星期', 'warning');
+                return;
             }
-            
-            localStorage.setItem('currentUser', currentUser);
-            updateUIForUserRole();
+            recurrence.weekdays = weekdays;
         }
-
-        function updateUIForUserRole() {
-            const isPartner = currentUser === 'user2';
-            
-            const pageTitle = document.getElementById('page-title');
-            if (isPartner) {
-                pageTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> 共享日历（伙伴）';
-            } else {
-                pageTitle.innerHTML = '<i class="fas fa-calendar-alt"></i> 双人共享日历';
+        
+        if (recurrence.endType === 'date') {
+            recurrence.endDate = document.getElementById('repeat-end-date').value;
+            if (!recurrence.endDate) {
+                showMessage('请选择结束日期', 'warning');
+                return;
             }
-            
-            const user1Name = document.getElementById('user1-name');
-            const user2Name = document.getElementById('user2-name');
-            
-            if (isPartner) {
-                user1Name.textContent = '创建者';
-                user2Name.textContent = '我';
-            } else {
-                user1Name.textContent = '我';
-                user2Name.textContent = '伙伴';
-            }
-            
-            const shareHint = document.getElementById('share-hint');
-            if (isPartner) {
-                shareHint.innerHTML = '<i class="fas fa-check-circle"></i> 您已作为伙伴加入共享日历';
-                shareHint.style.color = '#28a745';
-            } else {
-                shareHint.innerHTML = '<i class="fas fa-info-circle"></i> 您是日历创建者，可以邀请一位伙伴共享日历';
-                shareHint.style.color = '#166088';
-            }
+        } else if (recurrence.endType === 'count') {
+            recurrence.count = parseInt(document.getElementById('repeat-count').value) || 10;
         }
-
-        // ==================== 日历初始化 ====================
-        function initCalendar() {
-            const calendarEl = document.getElementById('calendar');
+    }
+    
+    let reminders = [];
+    try {
+        reminders = JSON.parse(document.getElementById('selected-reminders').value || '[]');
+    } catch (e) {
+        const customSelected = document.querySelector('.reminder-option[data-minutes="custom"]').classList.contains('selected');
+        if (customSelected) {
+            const value = parseInt(document.getElementById('reminder-value').value) || 15;
+            const unit = document.getElementById('reminder-unit').value;
+            let minutes = value;
             
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridWeek',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                locale: 'zh-cn',
-                slotMinTime: '00:00',
-                slotMaxTime: '24:00',
-                slotDuration: '00:30:00',
-                allDaySlot: true,
-                editable: true,
-                selectable: true,
-                selectMirror: true,
-                dayMaxEvents: true,
-                eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
-                
-                // 点击空白处添加事件
-                select: function(info) {
-                    showEventForm();
-                    document.getElementById('event-date').value = info.startStr.split('T')[0];
-                    
-                    if (info.allDay) {
-                        document.getElementById('is-all-day').checked = true;
-                        toggleAllDayEvent();
-                    } else {
-                        document.getElementById('start-time').value = formatTime(info.start);
-                        document.getElementById('end-time').value = formatTime(info.end);
-                    }
-                },
-                
-                // 点击事件
-                eventClick: function(info) {
-                    showEventActionDialog(info.event);
-                },
-                
-                // 拖拽调整时间
-                eventDrop: function(info) {
-                    updateEventInStorage(info.event);
-                    showMessage('事件时间已更新', 'success');
-                },
-                
-                // 调整持续时间
-                eventResize: function(info) {
-                    updateEventInStorage(info.event);
-                    showMessage('事件时长已更新', 'success');
-                },
-                
-                // 加载事件到日历
-                events: function(fetchInfo, successCallback) {
-                    const filteredEvents = getFilteredEvents(fetchInfo.start, fetchInfo.end);
-                    successCallback(filteredEvents);
-                },
-                
-                // 事件渲染
-                eventDidMount: function(info) {
-                    const eventType = info.event.extendedProps.type || 'schedule';
-                    const user = info.event.extendedProps.user;
-                    let color = EVENT_TYPES[eventType].color;
-                    
-                    // 如果是用户特定事件，稍微调整颜色
-                    if (user === 'user1' && currentUser === 'user2') {
-                        color = adjustColor(color, -20);
-                    } else if (user === 'user2' && currentUser === 'user1') {
-                        color = adjustColor(color, 20);
-                    }
-                    
-                    info.el.style.backgroundColor = color;
-                    info.el.style.borderColor = color;
-                    info.el.style.color = getContrastColor(color);
-                    info.el.style.borderRadius = '6px';
-                    info.el.style.padding = '2px 4px';
-                    
-                    // 添加事件ID到DOM
-                    info.el.setAttribute('data-event-id', info.event.id);
-                }
-            });
+            if (unit === 'hours') minutes = value * 60;
+            if (unit === 'days') minutes = value * 24 * 60;
             
-            calendar.render();
-            console.log('日历初始化完成');
-        }
-
-        // ==================== 事件类型选择初始化 ====================
-        function initEventTypeSelection() {
-            const typeOptions = document.querySelectorAll('.event-type-option');
-            typeOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    typeOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    const type = this.getAttribute('data-type');
-                    document.getElementById('event-type').value = type;
-                });
-            });
-            
-            // 默认选中第一个
-            if (typeOptions.length > 0) {
-                typeOptions[0].click();
+            reminders = [{ minutes: minutes, custom: true, value: value, unit: unit }];
+        } else {
+            const selectedOption = document.querySelector('.reminder-option.selected');
+            if (selectedOption) {
+                const minutes = parseInt(selectedOption.getAttribute('data-minutes'));
+                reminders = [{ minutes: minutes, custom: false }];
             }
         }
-
-        // ==================== 事件管理 ====================
-        function loadEvents() {
-            const saved = localStorage.getItem('sharedCalendarEvents');
-            if (saved) {
-                try {
-                    events = JSON.parse(saved);
-                    console.log('加载了', events.length, '个事件');
-                    scheduleAllReminders();
-                } catch (e) {
-                    console.error('加载事件失败:', e);
-                    events = [];
-                }
-            } else {
-                events = [];
-            }
-        }
-
-        function saveEvents() {
-            localStorage.setItem('sharedCalendarEvents', JSON.stringify(events));
-            localStorage.setItem('lastUpdate', Date.now().toString());
-        }
-
-        function getFilteredEvents(start, end) {
-            const viewType = document.querySelector('.tab-btn.active').textContent;
-            
-            const filtered = events.filter(event => {
-                const eventStart = new Date(event.start);
-                const eventEnd = new Date(event.end);
-                
-                if (eventEnd < start || eventStart > end) return false;
-                
-                if (viewType.includes('我的')) {
-                    return event.user === currentUser || event.user === 'both';
-                }
-                
-                return true;
-            });
-
-            return filtered.map(event => {
-                const eventType = event.type || 'schedule';
-                const isRecurring = event.recurrence && event.recurrence.type !== 'none';
-                
-                return {
-                    id: event.id,
-                    title: event.title,
-                    start: event.start,
-                    end: event.end,
-                    allDay: event.allDay || false,
-                    extendedProps: {
-                        user: event.user,
-                        type: eventType,
-                        location: event.location || '',
-                        description: event.description || '',
-                        recurrence: event.recurrence || { type: 'none' },
-                        reminders: event.reminders || [],
-                        isRecurring: isRecurring,
-                        originalEventId: event.originalEventId || event.id
-                    },
-                    backgroundColor: EVENT_TYPES[eventType].color,
-                    borderColor: EVENT_TYPES[eventType].color
-                };
-            });
-        }
-
-        // ==================== 事件表单操作 ====================
-        function showEventForm(eventId = null) {
-            resetEventForm();
-            
-            if (eventId) {
-                // 编辑模式
-                const event = events.find(e => e.id === eventId);
-                if (event) {
-                    fillEventForm(event);
-                    document.getElementById('form-title').textContent = '编辑事件';
-                    document.getElementById('edit-mode').value = 'edit';
-                    document.getElementById('event-id').value = eventId;
-                    document.getElementById('delete-event-btn').classList.remove('hidden');
-                }
-            } else {
-                // 添加模式
-                document.getElementById('form-title').textContent = '添加事件';
-                document.getElementById('edit-mode').value = 'add';
-                document.getElementById('delete-event-btn').classList.add('hidden');
-                
-                // 根据当前用户设置默认参与方
-                if (currentUser === 'user2') {
-                    document.getElementById('event-user').value = 'user2';
-                }
-            }
-            
-            document.getElementById('event-form').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function hideEventForm() {
-            document.getElementById('event-form').style.display = 'none';
-            document.getElementById('overlay').style.display = 'none';
-        }
-
-        function resetEventForm() {
-            document.getElementById('eventForm').reset();
-            setupFormDefaults();
-            
-            // 重置事件类型选择
-            document.querySelectorAll('.event-type-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector('.event-type-option[data-type="schedule"]').classList.add('selected');
-            document.getElementById('event-type').value = 'schedule';
-            
-            // 重置重复设置
-            document.querySelectorAll('.repeat-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector('.repeat-option[data-repeat="none"]').classList.add('selected');
-            document.getElementById('custom-repeat-section').classList.add('hidden');
-            document.getElementById('repeat-type').value = 'none';
-            
-            // 重置提醒设置
-            document.querySelectorAll('.reminder-option').forEach(opt => opt.classList.remove('selected'));
-            document.getElementById('custom-reminder-section').classList.add('hidden');
-            document.getElementById('selected-reminders').value = '[]';
-            
-            // 重置删除按钮
-            document.getElementById('delete-event-btn').classList.add('hidden');
-            document.getElementById('edit-mode').value = 'add';
-        }
-
-        function setupFormDefaults() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('event-date').value = today;
-            
-            const now = new Date();
-            const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
-            nextHour.setMinutes(0, 0, 0);
-            
-            document.getElementById('start-time').value = formatTime(nextHour);
-            
-            const endTime = new Date(nextHour.getTime() + 60 * 60 * 1000);
-            document.getElementById('end-time').value = formatTime(endTime);
-            
-            // 设置结束日期为今天
-            document.getElementById('end-date').value = today;
-            
-            // 设置重复结束日期为一个月后
-            const nextMonth = new Date();
-            nextMonth.setMonth(nextMonth.getMonth() + 1);
-            document.getElementById('repeat-end-date').value = nextMonth.toISOString().split('T')[0];
-        }
-
-        function fillEventForm(event) {
-            document.getElementById('event-title').value = event.title || '';
-            document.getElementById('event-type').value = event.type || 'schedule';
-            
-            // 设置事件类型选择
-            document.querySelectorAll('.event-type-option').forEach(opt => {
-                opt.classList.remove('selected');
-                if (opt.getAttribute('data-type') === (event.type || 'schedule')) {
-                    opt.classList.add('selected');
-                }
-            });
-            
-            // 设置参与方 - 这里修复了问题
-            if (event.user === 'both') {
-                document.getElementById('event-user').value = 'both';
-            } else if (event.user === currentUser) {
-                // 如果事件属于当前用户，显示"仅我自己"
-                document.getElementById('event-user').value = currentUser;
-            } else {
-                // 如果事件属于对方，显示"仅伙伴"
-                document.getElementById('event-user').value = 
-                    currentUser === 'user1' ? 'user2' : 'user1';
-            }
-            
-            document.getElementById('event-location').value = event.location || '';
-            document.getElementById('event-description').value = event.description || '';
-            
-            // 设置时间
-            const startDate = new Date(event.start);
-            const endDate = new Date(event.end);
-            
-            document.getElementById('event-date').value = startDate.toISOString().split('T')[0];
-            document.getElementById('is-all-day').checked = event.allDay || false;
-            toggleAllDayEvent();
-            
-            if (!event.allDay) {
-                document.getElementById('start-time').value = formatTime(startDate);
-                document.getElementById('end-time').value = formatTime(endDate);
-            } else {
-                // 全天事件可能有跨天
-                if (startDate.toDateString() !== endDate.toDateString()) {
-                    document.getElementById('end-date').value = endDate.toISOString().split('T')[0];
-                    document.getElementById('end-date-group').classList.remove('hidden');
-                }
-            }
-            
-            // 设置重复
-            const recurrence = event.recurrence || { type: 'none' };
-            document.getElementById('repeat-type').value = recurrence.type;
-            
-            document.querySelectorAll('.repeat-option').forEach(opt => {
-                opt.classList.remove('selected');
-                if (opt.getAttribute('data-repeat') === recurrence.type) {
-                    opt.classList.add('selected');
-                }
-            });
-            
-            if (recurrence.type === 'custom') {
-                selectRepeatOption('custom');
-                document.getElementById('repeat-interval').value = recurrence.interval || 1;
-                document.getElementById('repeat-frequency').value = recurrence.frequency || 'days';
-                toggleCustomRepeatOptions();
-                
-                if (recurrence.weekdays) {
-                    document.getElementById('selected-weekdays').value = JSON.stringify(recurrence.weekdays);
-                    document.querySelectorAll('.weekday-option').forEach(opt => {
-                        const day = parseInt(opt.getAttribute('data-day'));
-                        if (recurrence.weekdays.includes(day)) {
-                            opt.classList.add('selected');
-                        }
-                    });
-                }
-                
-                if (recurrence.endType) {
-                    document.getElementById('repeat-end-type').value = recurrence.endType;
-                    toggleRepeatEndOptions();
-                    
-                    if (recurrence.endDate) {
-                        document.getElementById('repeat-end-date').value = recurrence.endDate;
-                    }
-                    if (recurrence.count) {
-                        document.getElementById('repeat-count').value = recurrence.count;
-                    }
-                }
-            }
-            
-            // 设置提醒
-            const reminders = event.reminders || [];
-            document.getElementById('selected-reminders').value = JSON.stringify(reminders);
-            
-            if (reminders.length > 0) {
-                // 选中第一个提醒作为显示
-                const firstReminder = reminders[0];
-                if (firstReminder.custom) {
-                    selectReminder('custom');
-                    document.getElementById('reminder-value').value = firstReminder.value;
-                    document.getElementById('reminder-unit').value = firstReminder.unit;
+    }
+    
+    const eventData = {
+        id: eventId,
+        title: title,
+        type: type,
+        user: user,
+        location: location,
+        description: description,
+        allDay: isAllDay,
+        start: start,
+        end: end,
+        recurrence: recurrence,
+        reminders: reminders,
+        createdAt: new Date().toISOString(),
+        createdBy: currentUser,
+        originalEventId: eventId
+    };
+    
+    const editMode = document.getElementById('edit-mode').value;
+    if (editMode === 'edit') {
+        const index = events.findIndex(e => e.id === eventId);
+        if (index !== -1) {
+            const oldEvent = events[index];
+            if (oldEvent.recurrence && oldEvent.recurrence.type !== 'none') {
+                if (confirm('这是一个重复事件。是否要修改所有重复事件？')) {
+                    events = events.filter(e => 
+                        e.originalEventId !== oldEvent.originalEventId || e.id === eventId
+                    );
+                    events.push(eventData);
                 } else {
-                    const presetOption = document.querySelector(`.reminder-option[data-minutes="${firstReminder.minutes}"]`);
-                    if (presetOption) {
-                        presetOption.click();
-                    }
+                    eventData.originalEventId = oldEvent.originalEventId;
+                    eventData.recurrence = { type: 'none' };
+                    events.push(eventData);
                 }
-            }
-        }
-
-        // ==================== 表单功能函数 ====================
-        function toggleAllDayEvent() {
-            const isAllDay = document.getElementById('is-all-day').checked;
-            const startTimeGroup = document.getElementById('start-time-group');
-            const endTimeGroup = document.getElementById('end-time-group');
-            const endDateGroup = document.getElementById('end-date-group');
-            
-            if (isAllDay) {
-                startTimeGroup.style.display = 'none';
-                endTimeGroup.style.display = 'none';
-                endDateGroup.style.display = 'block';
-                
-                // 设置默认结束日期为开始日期
-                const startDate = document.getElementById('event-date').value;
-                document.getElementById('end-date').value = startDate;
             } else {
-                startTimeGroup.style.display = 'block';
-                endTimeGroup.style.display = 'block';
-                endDateGroup.style.display = 'none';
+                events[index] = eventData;
             }
         }
-
-        function selectRepeatOption(type) {
-            document.querySelectorAll('.repeat-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector(`.repeat-option[data-repeat="${type}"]`).classList.add('selected');
-            document.getElementById('repeat-type').value = type;
-            
-            if (type === 'custom') {
-                document.getElementById('custom-repeat-section').classList.remove('hidden');
-            } else {
-                document.getElementById('custom-repeat-section').classList.add('hidden');
-            }
+    } else {
+        events.push(eventData);
+        
+        if (recurrence.type !== 'none') {
+            generateRecurringEvents(eventData);
         }
+    }
+    
+    saveEvents();
+    scheduleEventReminders(eventData);
+    calendar.refetchEvents();
+    updateTodayEvents();
+    hideEventForm();
+    
+    showMessage(`${editMode === 'edit' ? '更新' : '添加'}事件"${title}"成功`, 'success');
+}
 
-        function toggleCustomRepeatOptions() {
-            const frequency = document.getElementById('repeat-frequency').value;
-            
-            document.getElementById('weekly-options').classList.add('hidden');
-            document.getElementById('monthly-options').classList.add('hidden');
-            document.getElementById('yearly-options').classList.add('hidden');
-            
-            if (frequency === 'weeks') {
-                document.getElementById('weekly-options').classList.remove('hidden');
-            } else if (frequency === 'months') {
-                document.getElementById('monthly-options').classList.remove('hidden');
-            } else if (frequency === 'years') {
-                document.getElementById('yearly-options').classList.remove('hidden');
-            }
-        }
-
-        function toggleWeekday(element) {
-            element.classList.toggle('selected');
-            const weekdays = [];
-            document.querySelectorAll('.weekday-option.selected').forEach(opt => {
-                weekdays.push(parseInt(opt.getAttribute('data-day')));
-            });
-            document.getElementById('selected-weekdays').value = JSON.stringify(weekdays);
-        }
-
-        function toggleRepeatEndOptions() {
-            const endType = document.getElementById('repeat-end-type').value;
-            
-            document.getElementById('repeat-end-date-group').classList.add('hidden');
-            document.getElementById('repeat-count-group').classList.add('hidden');
-            
-            if (endType === 'date') {
-                document.getElementById('repeat-end-date-group').classList.remove('hidden');
-            } else if (endType === 'count') {
-                document.getElementById('repeat-count-group').classList.remove('hidden');
-            }
-        }
-
-        function selectReminder(value) {
-            document.querySelectorAll('.reminder-option').forEach(opt => opt.classList.remove('selected'));
-            
-            if (value === 'custom') {
-                document.querySelector('.reminder-option[data-minutes="custom"]').classList.add('selected');
-                document.getElementById('custom-reminder-section').classList.remove('hidden');
-            } else {
-                const option = document.querySelector(`.reminder-option[data-minutes="${value}"]`);
-                if (option) {
-                    option.classList.add('selected');
-                }
-                document.getElementById('custom-reminder-section').classList.add('hidden');
+// ==================== 生成重复事件 ====================
+function generateRecurringEvents(baseEvent) {
+    if (!baseEvent.recurrence || baseEvent.recurrence.type === 'none') return;
+    
+    const recurrence = baseEvent.recurrence;
+    const startDate = new Date(baseEvent.start);
+    const endDate = new Date(baseEvent.end);
+    const duration = endDate - startDate;
+    
+    let currentDate = new Date(startDate);
+    let count = 0;
+    const maxCount = recurrence.count || 365;
+    
+    while (count < maxCount) {
+        let shouldAdd = false;
+        
+        switch (recurrence.type) {
+            case 'daily':
+                currentDate.setDate(currentDate.getDate() + (recurrence.interval || 1));
+                shouldAdd = true;
+                break;
                 
-                // 保存提醒设置
-                const reminders = [{ minutes: value, custom: false }];
-                document.getElementById('selected-reminders').value = JSON.stringify(reminders);
-            }
+            case 'weekdays':
+                currentDate.setDate(currentDate.getDate() + 1);
+                const day = currentDate.getDay();
+                shouldAdd = day >= 1 && day <= 5;
+                break;
+                
+            case 'weekly':
+                currentDate.setDate(currentDate.getDate() + 7 * (recurrence.interval || 1));
+                shouldAdd = true;
+                break;
+                
+            case 'monthly':
+                currentDate.setMonth(currentDate.getMonth() + (recurrence.interval || 1));
+                shouldAdd = true;
+                break;
+                
+            case 'yearly':
+                currentDate.setFullYear(currentDate.getFullYear() + (recurrence.interval || 1));
+                shouldAdd = true;
+                break;
+                
+            case 'custom':
+                shouldAdd = shouldAddCustomRecurrence(currentDate, recurrence, startDate);
+                break;
         }
-
-        // ==================== 保存事件 ====================
-        function saveEvent() {
-            // 获取表单数据
-            const eventId = document.getElementById('event-id').value || 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            const title = document.getElementById('event-title').value.trim();
-            const type = document.getElementById('event-type').value;
-            const user = document.getElementById('event-user').value;
-            const location = document.getElementById('event-location').value.trim();
-            const description = document.getElementById('event-description').value.trim();
-            const isAllDay = document.getElementById('is-all-day').checked;
-            const date = document.getElementById('event-date').value;
-            const startTime = document.getElementById('start-time').value;
-            const endTime = document.getElementById('end-time').value;
-            const endDate = document.getElementById('end-date').value;
+        
+        if (recurrence.endDate && new Date(recurrence.endDate) < currentDate) break;
+        if (recurrence.count && count >= recurrence.count) break;
+        if (count >= maxCount) break;
+        
+        if (shouldAdd) {
+            const newStart = new Date(currentDate);
+            const newEnd = new Date(newStart.getTime() + duration);
             
-            // 验证数据
-            if (!title) {
-                showMessage('请输入事件标题', 'warning');
-                document.getElementById('event-title').focus();
-                return;
-            }
-            
-            if (!date) {
-                showMessage('请选择日期', 'warning');
-                return;
-            }
-            
-            if (!isAllDay && (!startTime || !endTime)) {
-                showMessage('请选择时间', 'warning');
-                return;
-            }
-            
-            if (isAllDay && date > endDate) {
-                showMessage('结束日期不能早于开始日期', 'warning');
-                return;
-            }
-            
-            if (!isAllDay && startTime >= endTime) {
-                showMessage('结束时间必须晚于开始时间', 'warning');
-                return;
-            }
-            
-            // 构建事件时间
-            let start, end;
-            if (isAllDay) {
-                start = date + 'T00:00:00';
-                end = endDate + 'T23:59:59';
-            } else {
-                start = date + 'T' + startTime + ':00';
-                end = date + 'T' + endTime + ':00';
-            }
-            
-            // 构建重复规则
-            const repeatType = document.getElementById('repeat-type').value;
-            let recurrence = { type: repeatType };
-            
-            if (repeatType === 'custom') {
-                recurrence = {
-                    type: 'custom',
-                    interval: parseInt(document.getElementById('repeat-interval').value) || 1,
-                    frequency: document.getElementById('repeat-frequency').value,
-                    endType: document.getElementById('repeat-end-type').value
-                };
-                
-                if (recurrence.frequency === 'weeks') {
-                    const weekdays = JSON.parse(document.getElementById('selected-weekdays').value || '[]');
-                    if (weekdays.length === 0) {
-                        showMessage('请至少选择一个星期', 'warning');
-                        return;
-                    }
-                    recurrence.weekdays = weekdays;
-                }
-                
-                if (recurrence.endType === 'date') {
-                    recurrence.endDate = document.getElementById('repeat-end-date').value;
-                    if (!recurrence.endDate) {
-                        showMessage('请选择结束日期', 'warning');
-                        return;
-                    }
-                } else if (recurrence.endType === 'count') {
-                    recurrence.count = parseInt(document.getElementById('repeat-count').value) || 10;
-                }
-            }
-            
-            // 构建提醒设置
-            let reminders = [];
-            try {
-                reminders = JSON.parse(document.getElementById('selected-reminders').value || '[]');
-            } catch (e) {
-                // 处理自定义提醒
-                const customSelected = document.querySelector('.reminder-option[data-minutes="custom"]').classList.contains('selected');
-                if (customSelected) {
-                    const value = parseInt(document.getElementById('reminder-value').value) || 15;
-                    const unit = document.getElementById('reminder-unit').value;
-                    let minutes = value;
-                    
-                    if (unit === 'hours') minutes = value * 60;
-                    if (unit === 'days') minutes = value * 24 * 60;
-                    
-                    reminders = [{ minutes: minutes, custom: true, value: value, unit: unit }];
-                } else {
-                    const selectedOption = document.querySelector('.reminder-option.selected');
-                    if (selectedOption) {
-                        const minutes = parseInt(selectedOption.getAttribute('data-minutes'));
-                        reminders = [{ minutes: minutes, custom: false }];
-                    }
-                }
-            }
-            
-            // 创建事件对象
-            const eventData = {
-                id: eventId,
-                title: title,
-                type: type,
-                user: user,
-                location: location,
-                description: description,
-                allDay: isAllDay,
-                start: start,
-                end: end,
-                recurrence: recurrence,
-                reminders: reminders,
-                createdAt: new Date().toISOString(),
-                createdBy: currentUser,
-                originalEventId: eventId
+            const recurringEvent = {
+                ...baseEvent,
+                id: baseEvent.id + '_' + count,
+                start: newStart.toISOString(),
+                end: newEnd.toISOString(),
+                originalEventId: baseEvent.id
             };
             
-            // 如果是编辑模式
-            const editMode = document.getElementById('edit-mode').value;
-            if (editMode === 'edit') {
-                // 找到并更新事件
-                const index = events.findIndex(e => e.id === eventId);
-                if (index !== -1) {
-                    // 检查是否是重复事件
-                    const oldEvent = events[index];
-                    if (oldEvent.recurrence && oldEvent.recurrence.type !== 'none') {
-                        // 如果是重复事件，询问如何处理
-                        if (confirm('这是一个重复事件。是否要修改所有重复事件？')) {
-                            // 更新所有重复事件
-                            events = events.filter(e => 
-                                e.originalEventId !== oldEvent.originalEventId || e.id === eventId
-                            );
-                            events.push(eventData);
-                        } else {
-                            // 只更新当前事件
-                            eventData.originalEventId = oldEvent.originalEventId;
-                            eventData.recurrence = { type: 'none' };
-                            events.push(eventData);
-                        }
-                    } else {
-                        // 非重复事件，直接更新
-                        events[index] = eventData;
-                    }
-                }
-            } else {
-                // 添加新事件
-                events.push(eventData);
-                
-                // 如果是重复事件，生成重复实例
-                if (recurrence.type !== 'none') {
-                    generateRecurringEvents(eventData);
-                }
-            }
-            
-            // 保存并更新
-            saveEvents();
-            scheduleEventReminders(eventData);
-            calendar.refetchEvents();
-            updateTodayEvents();
-            hideEventForm();
-            
-            showMessage(`${editMode === 'edit' ? '更新' : '添加'}事件"${title}"成功`, 'success');
+            events.push(recurringEvent);
+            count++;
         }
+    }
+}
 
-        // ==================== 生成重复事件 ====================
-        function generateRecurringEvents(baseEvent) {
-            if (!baseEvent.recurrence || baseEvent.recurrence.type === 'none') return;
-            
-            const recurrence = baseEvent.recurrence;
-            const startDate = new Date(baseEvent.start);
-            const endDate = new Date(baseEvent.end);
-            const duration = endDate - startDate;
-            
-            let currentDate = new Date(startDate);
-            let count = 0;
-            const maxCount = recurrence.count || 365; // 默认最多365个
-            
-            while (count < maxCount) {
-                let shouldAdd = false;
-                
-                switch (recurrence.type) {
-                    case 'daily':
-                        currentDate.setDate(currentDate.getDate() + (recurrence.interval || 1));
-                        shouldAdd = true;
-                        break;
-                        
-                    case 'weekdays':
-                        currentDate.setDate(currentDate.getDate() + 1);
-                        const day = currentDate.getDay();
-                        shouldAdd = day >= 1 && day <= 5; // 周一到周五
-                        break;
-                        
-                    case 'weekly':
-                        currentDate.setDate(currentDate.getDate() + 7 * (recurrence.interval || 1));
-                        shouldAdd = true;
-                        break;
-                        
-                    case 'monthly':
-                        currentDate.setMonth(currentDate.getMonth() + (recurrence.interval || 1));
-                        shouldAdd = true;
-                        break;
-                        
-                    case 'yearly':
-                        currentDate.setFullYear(currentDate.getFullYear() + (recurrence.interval || 1));
-                        shouldAdd = true;
-                        break;
-                        
-                    case 'custom':
-                        shouldAdd = shouldAddCustomRecurrence(currentDate, recurrence, startDate);
-                        break;
-                }
-                
-                // 检查结束条件
-                if (recurrence.endDate && new Date(recurrence.endDate) < currentDate) break;
-                if (recurrence.count && count >= recurrence.count) break;
-                if (count >= maxCount) break;
-                
-                if (shouldAdd) {
-                    const newStart = new Date(currentDate);
-                    const newEnd = new Date(newStart.getTime() + duration);
-                    
-                    const recurringEvent = {
-                        ...baseEvent,
-                        id: baseEvent.id + '_' + count,
-                        start: newStart.toISOString(),
-                        end: newEnd.toISOString(),
-                        originalEventId: baseEvent.id
-                    };
-                    
-                    events.push(recurringEvent);
-                    count++;
-                }
-            }
+function shouldAddCustomRecurrence(date, recurrence, startDate) {
+    if (recurrence.frequency === 'days') {
+        const daysDiff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
+        return daysDiff % recurrence.interval === 0;
+    }
+    
+    if (recurrence.frequency === 'weeks') {
+        const daysDiff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
+        if (daysDiff % (7 * recurrence.interval) !== 0) return false;
+        
+        if (recurrence.weekdays && recurrence.weekdays.length > 0) {
+            const day = date.getDay();
+            return recurrence.weekdays.includes(day);
         }
+        return true;
+    }
+    
+    if (recurrence.frequency === 'months') {
+        const monthsDiff = (date.getFullYear() - startDate.getFullYear()) * 12 + 
+                          (date.getMonth() - startDate.getMonth());
+        return monthsDiff % recurrence.interval === 0;
+    }
+    
+    if (recurrence.frequency === 'years') {
+        const yearsDiff = date.getFullYear() - startDate.getFullYear();
+        return yearsDiff % recurrence.interval === 0;
+    }
+    
+    return false;
+}
 
-        function shouldAddCustomRecurrence(date, recurrence, startDate) {
-            if (recurrence.frequency === 'days') {
-                const daysDiff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
-                return daysDiff % recurrence.interval === 0;
-            }
+// ==================== 删除事件 ====================
+function showEventActionDialog(event) {
+    const eventId = event.id;
+    const isRecurring = event.extendedProps.isRecurring;
+    
+    let message = `
+        <strong>${event.title}</strong><br>
+        时间: ${formatTime(event.start)} - ${formatTime(event.end)}<br>
+        ${event.extendedProps.location ? '地点: ' + event.extendedProps.location + '<br>' : ''}
+        类型: ${EVENT_TYPES[event.extendedProps.type]?.name || '日程'}
+    `;
+    
+    const dialog = document.createElement('div');
+    dialog.id = 'event-action-dialog';
+    dialog.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        z-index: 1001;
+        min-width: 350px;
+        max-width: 90%;
+    `;
+    
+    let deleteOptions = '';
+    if (isRecurring) {
+        deleteOptions = `
+            <div style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <p style="margin: 0; font-size: 14px; color: #666;">
+                    <i class="fas fa-redo"></i> 这是一个重复事件
+                </p>
+            </div>
+        `;
+    }
+    
+    dialog.innerHTML = `
+        <h3 style="margin-bottom: 15px; color: #4a6fa5;">
+            <i class="fas fa-calendar-check"></i> 事件操作
+        </h3>
+        
+        <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+            ${message}
+        </div>
+        
+        ${deleteOptions}
+        
+        <div style="display: grid; gap: 10px;">
+            <button onclick="editEventById('${eventId}')" 
+                    style="padding: 12px; background: #4a6fa5; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                <i class="fas fa-edit"></i> 编辑事件
+            </button>
             
-            if (recurrence.frequency === 'weeks') {
-                const daysDiff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
-                if (daysDiff % (7 * recurrence.interval) !== 0) return false;
-                
-                if (recurrence.weekdays && recurrence.weekdays.length > 0) {
-                    const day = date.getDay();
-                    return recurrence.weekdays.includes(day);
-                }
-                return true;
-            }
+            <button onclick="showDeleteDialog('${eventId}', ${isRecurring})" 
+                    style="padding: 12px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                <i class="fas fa-trash"></i> 删除事件
+            </button>
             
-            if (recurrence.frequency === 'months') {
-                const monthsDiff = (date.getFullYear() - startDate.getFullYear()) * 12 + 
-                                  (date.getMonth() - startDate.getMonth());
-                return monthsDiff % recurrence.interval === 0;
-            }
-            
-            if (recurrence.frequency === 'years') {
-                const yearsDiff = date.getFullYear() - startDate.getFullYear();
-                return yearsDiff % recurrence.interval === 0;
-            }
-            
-            return false;
-        }
+            <button onclick="closeEventActionDialog()" 
+                    style="padding: 12px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
+                <i class="fas fa-times"></i> 关闭
+            </button>
+        </div>
+    `;
+    
+    const overlay = document.createElement('div');
+    overlay.id = 'event-action-overlay';
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    `;
+    overlay.onclick = closeEventActionDialog;
+    
+    document.body.appendChild(overlay);
+    document.body.appendChild(dialog);
+}
 
-        // ==================== 删除事件 ====================
-        function showEventActionDialog(event) {
-            const eventId = event.id;
-            const originalEventId = event.extendedProps.originalEventId || eventId;
-            const isRecurring = event.extendedProps.isRecurring;
-            
-            let message = `
-                <strong>${event.title}</strong><br>
-                时间: ${formatTime(event.start)} - ${formatTime(event.end)}<br>
-                ${event.extendedProps.location ? '地点: ' + event.extendedProps.location + '<br>' : ''}
-                类型: ${EVENT_TYPES[event.extendedProps.type]?.name || '日程'}
-            `;
-            
-            // 创建操作对话框
-            const dialog = document.createElement('div');
-            dialog.id = 'event-action-dialog';
-            dialog.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 25px;
-                border-radius: 12px;
-                box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-                z-index: 1001;
-                min-width: 350px;
-                max-width: 90%;
-            `;
-            
-            let deleteOptions = '';
-            if (isRecurring) {
-                deleteOptions = `
-                    <div style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                        <p style="margin: 0; font-size: 14px; color: #666;">
-                            <i class="fas fa-redo"></i> 这是一个重复事件
-                        </p>
-                    </div>
-                `;
+function closeEventActionDialog() {
+    const dialog = document.getElementById('event-action-dialog');
+    const overlay = document.getElementById('event-action-overlay');
+    
+    if (dialog) dialog.remove();
+    if (overlay) overlay.remove();
+}
+
+function editEventById(eventId) {
+    closeEventActionDialog();
+    showEventForm(eventId);
+}
+
+function showDeleteDialog(eventId, isRecurring) {
+    closeEventActionDialog();
+    
+    document.getElementById('event-to-delete').value = eventId;
+    document.getElementById('delete-option').value = 'this';
+    
+    if (isRecurring) {
+        document.getElementById('delete-recurring-options').classList.remove('hidden');
+        document.getElementById('delete-message').textContent = '这是一个重复事件，请选择删除方式：';
+    } else {
+        document.getElementById('delete-recurring-options').classList.add('hidden');
+        document.getElementById('delete-message').textContent = '确定要删除这个事件吗？';
+    }
+    
+    document.querySelectorAll('.delete-option').forEach(opt => opt.classList.remove('selected'));
+    
+    document.getElementById('delete-dialog').classList.remove('hidden');
+    document.getElementById('overlay').style.display = 'block';
+}
+
+function hideDeleteDialog() {
+    document.getElementById('delete-dialog').classList.add('hidden');
+    document.getElementById('overlay').style.display = 'none';
+}
+
+function selectDeleteOption(option) {
+    document.querySelectorAll('.delete-option').forEach(opt => opt.classList.remove('selected'));
+    event.target.classList.add('selected');
+    document.getElementById('delete-option').value = option;
+}
+
+function confirmDelete() {
+    const eventId = document.getElementById('event-to-delete').value;
+    const deleteOption = document.getElementById('delete-option').value;
+    
+    const eventIndex = events.findIndex(e => e.id === eventId);
+    if (eventIndex === -1) {
+        showMessage('未找到要删除的事件', 'warning');
+        hideDeleteDialog();
+        return;
+    }
+    
+    const event = events[eventIndex];
+    const originalEventId = event.originalEventId || event.id;
+    
+    let deletedCount = 0;
+    
+    if (deleteOption === 'this') {
+        events.splice(eventIndex, 1);
+        deletedCount = 1;
+    } else if (deleteOption === 'future') {
+        const eventDate = new Date(event.start);
+        events = events.filter(e => {
+            if (e.originalEventId !== originalEventId) return true;
+            const eDate = new Date(e.start);
+            return eDate < eventDate;
+        });
+        deletedCount = events.filter(e => e.originalEventId === originalEventId).length;
+    } else if (deleteOption === 'all') {
+        const beforeCount = events.length;
+        events = events.filter(e => e.originalEventId !== originalEventId);
+        deletedCount = beforeCount - events.length;
+    }
+    
+    saveEvents();
+    calendar.refetchEvents();
+    updateTodayEvents();
+    hideDeleteDialog();
+    
+    showMessage(`已删除 ${deletedCount} 个事件`, 'success');
+}
+
+function deleteEvent() {
+    const eventId = document.getElementById('event-id').value;
+    if (eventId) {
+        showDeleteDialog(eventId, false);
+    }
+}
+
+// ==================== 提醒系统 ====================
+function initReminderSystem() {
+    if (!("Notification" in window)) {
+        console.log("此浏览器不支持桌面通知");
+        return;
+    }
+    
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+            notificationPermission = permission;
+        });
+    }
+    
+    checkReminders();
+}
+
+function requestNotificationPermission() {
+    if (Notification.permission === "granted") {
+        return;
+    }
+    
+    if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+            notificationPermission = permission;
+            if (permission === "granted") {
+                console.log("通知权限已授予");
             }
-            
-            dialog.innerHTML = `
-                <h3 style="margin-bottom: 15px; color: #4a6fa5;">
-                    <i class="fas fa-calendar-check"></i> 事件操作
-                </h3>
-                
-                <div style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
-                    ${message}
-                </div>
-                
-                ${deleteOptions}
-                
-                <div style="display: grid; gap: 10px;">
-                    <button onclick="editEventById('${eventId}')" 
-                            style="padding: 12px; background: #4a6fa5; color: white; border: none; border-radius: 6px; cursor: pointer;">
-                        <i class="fas fa-edit"></i> 编辑事件
-                    </button>
-                    
-                    <button onclick="showDeleteDialog('${eventId}', ${isRecurring})" 
-                            style="padding: 12px; background: #dc3545; color: white; border: none; border-radius: 6px; cursor: pointer;">
-                        <i class="fas fa-trash"></i> 删除事件
-                    </button>
-                    
-                    <button onclick="closeEventActionDialog()" 
-                            style="padding: 12px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 6px; cursor: pointer;">
-                        <i class="fas fa-times"></i> 关闭
-                    </button>
-                </div>
-            `;
-            
-            const overlay = document.createElement('div');
-            overlay.id = 'event-action-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 1000;
-            `;
-            overlay.onclick = closeEventActionDialog;
-            
-            document.body.appendChild(overlay);
-            document.body.appendChild(dialog);
-        }
+        });
+    }
+}
 
-        function closeEventActionDialog() {
-            const dialog = document.getElementById('event-action-dialog');
-            const overlay = document.getElementById('event-action-overlay');
-            
-            if (dialog) dialog.remove();
-            if (overlay) overlay.remove();
-        }
+function scheduleEventReminders(event) {
+    if (!event.reminders || event.reminders.length === 0) return;
+    
+    const eventTime = new Date(event.start);
+    
+    event.reminders.forEach(reminder => {
+        const reminderTime = new Date(eventTime.getTime() - reminder.minutes * 60 * 1000);
+        if (reminderTime < new Date()) return;
+        
+        const timeout = reminderTime.getTime() - Date.now();
+        
+        setTimeout(() => {
+            showEventReminder(event, reminder);
+        }, timeout);
+    });
+}
 
-        function editEventById(eventId) {
-            closeEventActionDialog();
-            showEventForm(eventId);
-        }
-
-        function showDeleteDialog(eventId, isRecurring) {
-            closeEventActionDialog();
-            
-            document.getElementById('event-to-delete').value = eventId;
-            document.getElementById('delete-option').value = 'this';
-            
-            if (isRecurring) {
-                document.getElementById('delete-recurring-options').classList.remove('hidden');
-                document.getElementById('delete-message').textContent = '这是一个重复事件，请选择删除方式：';
-            } else {
-                document.getElementById('delete-recurring-options').classList.add('hidden');
-                document.getElementById('delete-message').textContent = '确定要删除这个事件吗？';
+function scheduleAllReminders() {
+    const now = new Date();
+    
+    events.forEach(event => {
+        if (!event.reminders || event.reminders.length === 0) return;
+        
+        const eventTime = new Date(event.start);
+        
+        event.reminders.forEach(reminder => {
+            const reminderTime = new Date(eventTime.getTime() - reminder.minutes * 60 * 1000);
+            if (reminderTime > now) {
+                const timeout = reminderTime.getTime() - Date.now();
+                setTimeout(() => {
+                    showEventReminder(event, reminder);
+                }, timeout);
             }
-            
-            // 重置删除选项选择
-            document.querySelectorAll('.delete-option').forEach(opt => opt.classList.remove('selected'));
-            
-            document.getElementById('delete-dialog').classList.remove('hidden');
-            document.getElementById('overlay').style.display = 'block';
-        }
+        });
+    });
+}
 
-        function hideDeleteDialog() {
-            document.getElementById('delete-dialog').classList.add('hidden');
-            document.getElementById('overlay').style.display = 'none';
-        }
+function showEventReminder(event, reminder) {
+    if (notificationPermission === "granted") {
+        const notification = new Notification("日历提醒", {
+            body: `${event.title}\n时间: ${formatTime(event.start)}\n${reminder.minutes}分钟前提醒`,
+            icon: "/favicon.ico",
+            tag: event.id
+        });
+        
+        notification.onclick = function() {
+            window.focus();
+            this.close();
+        };
+    }
+    
+    showMessage(`提醒: ${event.title} 将在${formatReminderText(reminder)}开始`, 'info');
+}
 
-        function selectDeleteOption(option) {
-            document.querySelectorAll('.delete-option').forEach(opt => opt.classList.remove('selected'));
-            event.target.classList.add('selected');
-            document.getElementById('delete-option').value = option;
-        }
-
-        function confirmDelete() {
-            const eventId = document.getElementById('event-to-delete').value;
-            const deleteOption = document.getElementById('delete-option').value;
-            
-            const eventIndex = events.findIndex(e => e.id === eventId);
-            if (eventIndex === -1) {
-                showMessage('未找到要删除的事件', 'warning');
-                hideDeleteDialog();
-                return;
-            }
-            
-            const event = events[eventIndex];
-            const originalEventId = event.originalEventId || event.id;
-            
-            let deletedCount = 0;
-            
-            if (deleteOption === 'this') {
-                // 只删除当前事件
-                events.splice(eventIndex, 1);
-                deletedCount = 1;
-            } else if (deleteOption === 'future') {
-                // 删除当前及之后的所有重复
-                const eventDate = new Date(event.start);
-                events = events.filter(e => {
-                    if (e.originalEventId !== originalEventId) return true;
-                    const eDate = new Date(e.start);
-                    return eDate < eventDate;
-                });
-                deletedCount = events.filter(e => e.originalEventId === originalEventId).length;
-            } else if (deleteOption === 'all') {
-                // 删除所有重复事件
-                const beforeCount = events.length;
-                events = events.filter(e => e.originalEventId !== originalEventId);
-                deletedCount = beforeCount - events.length;
-            }
-            
-            // 更新存储和显示
-            saveEvents();
-            calendar.refetchEvents();
-            updateTodayEvents();
-            hideDeleteDialog();
-            
-            showMessage(`已删除 ${deletedCount} 个事件`, 'success');
-        }
-
-        function deleteEvent() {
-            const eventId = document.getElementById('event-id').value;
-            if (eventId) {
-                showDeleteDialog(eventId, false);
-            }
-        }
-
-        // ==================== 提醒系统 ====================
-        function initReminderSystem() {
-            // 检查浏览器通知权限
-            if (!("Notification" in window)) {
-                console.log("此浏览器不支持桌面通知");
-                return;
-            }
-            
-            // 请求通知权限
-            if (Notification.permission === "default") {
-                Notification.requestPermission().then(permission => {
-                    notificationPermission = permission;
-                });
-            }
-            
-            // 检查提醒
-            checkReminders();
-        }
-
-        function requestNotificationPermission() {
-            if (Notification.permission === "granted") {
-                return;
-            }
-            
-            if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(permission => {
-                    notificationPermission = permission;
-                    if (permission === "granted") {
-                        console.log("通知权限已授予");
-                    }
-                });
-            }
-        }
-
-        function scheduleEventReminders(event) {
+function checkReminders() {
+    setInterval(() => {
+        const now = new Date();
+        
+        events.forEach(event => {
             if (!event.reminders || event.reminders.length === 0) return;
             
             const eventTime = new Date(event.start);
             
             event.reminders.forEach(reminder => {
                 const reminderTime = new Date(eventTime.getTime() - reminder.minutes * 60 * 1000);
-                
-                // 如果提醒时间已过，跳过
-                if (reminderTime < new Date()) return;
-                
-                const timeout = reminderTime.getTime() - Date.now();
-                
-                setTimeout(() => {
+                const diff = now - reminderTime;
+                if (diff >= 0 && diff < 60000) {
                     showEventReminder(event, reminder);
-                }, timeout);
-            });
-        }
-
-        function scheduleAllReminders() {
-            const now = new Date();
-            
-            events.forEach(event => {
-                if (!event.reminders || event.reminders.length === 0) return;
-                
-                const eventTime = new Date(event.start);
-                
-                event.reminders.forEach(reminder => {
-                    const reminderTime = new Date(eventTime.getTime() - reminder.minutes * 60 * 1000);
-                    
-                    // 如果提醒时间在未来
-                    if (reminderTime > now) {
-                        const timeout = reminderTime.getTime() - Date.now();
-                        
-                        setTimeout(() => {
-                            showEventReminder(event, reminder);
-                        }, timeout);
-                    }
-                });
-            });
-        }
-
-        function showEventReminder(event, reminder) {
-            // 显示浏览器通知
-            if (notificationPermission === "granted") {
-                const notification = new Notification("日历提醒", {
-                    body: `${event.title}\n时间: ${formatTime(event.start)}\n${reminder.minutes}分钟前提醒`,
-                    icon: "/favicon.ico",
-                    tag: event.id
-                });
-                
-                notification.onclick = function() {
-                    window.focus();
-                    this.close();
-                };
-            }
-            
-            // 显示页面内提醒
-            showMessage(`提醒: ${event.title} 将在${formatReminderText(reminder)}开始`, 'info');
-        }
-
-        function checkReminders() {
-            // 每分钟检查一次提醒
-            setInterval(() => {
-                const now = new Date();
-                
-                events.forEach(event => {
-                    if (!event.reminders || event.reminders.length === 0) return;
-                    
-                    const eventTime = new Date(event.start);
-                    
-                    event.reminders.forEach(reminder => {
-                        const reminderTime = new Date(eventTime.getTime() - reminder.minutes * 60 * 1000);
-                        
-                        // 如果提醒时间在过去1分钟内，且未提醒过
-                        const diff = now - reminderTime;
-                        if (diff >= 0 && diff < 60000) {
-                            showEventReminder(event, reminder);
-                        }
-                    });
-                });
-            }, 60000);
-        }
-
-        function formatReminderText(reminder) {
-            if (reminder.minutes === 0) return "现在";
-            
-            if (reminder.custom) {
-                const value = reminder.value;
-                const unit = reminder.unit;
-                
-                switch(unit) {
-                    case 'minutes': return `${value}分钟`;
-                    case 'hours': return `${value}小时`;
-                    case 'days': return `${value}天`;
-                    default: return `${value}分钟`;
                 }
-            } else {
-                const minutes = reminder.minutes;
-                
-                if (minutes >= 10080) return "一周";
-                if (minutes >= 2880) return "2天";
-                if (minutes >= 1440) return "一天";
-                if (minutes >= 60) return `${Math.floor(minutes / 60)}小时`;
-                return `${minutes}分钟`;
-            }
-        }
-
-        // ==================== 今日事件 ====================
-        function updateTodayEvents() {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
-            const todayEvents = events.filter(event => {
-                const eventDate = new Date(event.start);
-                eventDate.setHours(0, 0, 0, 0);
-                return eventDate.getTime() === today.getTime();
-            }).sort((a, b) => new Date(a.start) - new Date(b.start));
-            
-            const container = document.getElementById('today-events');
-            
-            if (todayEvents.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align: center; padding: 30px; color: #999;">
-                        <i class="fas fa-calendar-day fa-2x" style="margin-bottom: 10px;"></i>
-                        <p>今天没有安排</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            let html = '';
-            todayEvents.forEach(event => {
-                const startTime = formatTime(event.start);
-                const endTime = formatTime(event.end);
-                const eventType = event.type || 'schedule';
-                const typeConfig = EVENT_TYPES[eventType];
-                const isAllDay = event.allDay || false;
-                
-                html += `
-                    <div class="today-event">
-                        <div class="time">
-                            <span>
-                                ${isAllDay ? '全天' : `${startTime} - ${endTime}`}
-                                <span class="type-tag" style="background: ${typeConfig.color}20; color: ${typeConfig.color};">
-                                    <i class="fas fa-${typeConfig.icon}"></i> ${typeConfig.name}
-                                </span>
-                            </span>
-                            <button onclick="deleteEventById('${event.id}')" 
-                                    style="background: none; border: none; color: #dc3545; cursor: pointer; padding: 2px 8px;"
-                                    title="删除">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                        <div class="title">${event.title}</div>
-                        ${event.location ? `<div class="location"><i class="fas fa-map-marker-alt"></i> ${event.location}</div>` : ''}
-                        <div class="event-actions">
-                            <button class="event-action-btn edit" onclick="editEventById('${event.id}')">
-                                <i class="fas fa-edit"></i> 编辑
-                            </button>
-                            <button class="event-action-btn delete" onclick="deleteEventById('${event.id}')">
-                                <i class="fas fa-trash"></i> 删除
-                            </button>
-                        </div>
-                    </div>
-                `;
             });
-            
-            container.innerHTML = html;
-        }
+        });
+    }, 60000);
+}
 
-        function deleteEventById(eventId) {
-            const eventIndex = events.findIndex(e => e.id === eventId);
-            if (eventIndex !== -1) {
-                const eventTitle = events[eventIndex].title;
-                events.splice(eventIndex, 1);
-                
+function formatReminderText(reminder) {
+    if (reminder.minutes === 0) return "现在";
+    
+    if (reminder.custom) {
+        const value = reminder.value;
+        const unit = reminder.unit;
+        
+        switch(unit) {
+            case 'minutes': return `${value}分钟`;
+            case 'hours': return `${value}小时`;
+            case 'days': return `${value}天`;
+            default: return `${value}分钟`;
+        }
+    } else {
+        const minutes = reminder.minutes;
+        
+        if (minutes >= 10080) return "一周";
+        if (minutes >= 2880) return "2天";
+        if (minutes >= 1440) return "一天";
+        if (minutes >= 60) return `${Math.floor(minutes / 60)}小时`;
+        return `${minutes}分钟`;
+    }
+}
+
+// ==================== 今日事件 ====================
+function updateTodayEvents() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const todayEvents = events.filter(event => {
+        const eventDate = new Date(event.start);
+        eventDate.setHours(0, 0, 0, 0);
+        return eventDate.getTime() === today.getTime();
+    }).sort((a, b) => new Date(a.start) - new Date(b.start));
+    
+    const container = document.getElementById('today-events');
+    
+    if (todayEvents.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: #999;">
+                <i class="fas fa-calendar-day fa-2x" style="margin-bottom: 10px;"></i>
+                <p>今天没有安排</p>
+            </div>
+        `;
+        return;
+    }
+    
+    let html = '';
+    todayEvents.forEach(event => {
+        const startTime = formatTime(event.start);
+        const endTime = formatTime(event.end);
+        const eventType = event.type || 'schedule';
+        const typeConfig = EVENT_TYPES[eventType];
+        const isAllDay = event.allDay || false;
+        
+        html += `
+            <div class="today-event">
+                <div class="time">
+                    <span>
+                        ${isAllDay ? '全天' : `${startTime} - ${endTime}`}
+                        <span class="type-tag" style="background: ${typeConfig.color}20; color: ${typeConfig.color};">
+                            <i class="fas fa-${typeConfig.icon}"></i> ${typeConfig.name}
+                        </span>
+                    </span>
+                    <button onclick="deleteEventById('${event.id}')" 
+                            style="background: none; border: none; color: #dc3545; cursor: pointer; padding: 2px 8px;"
+                            title="删除">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="title">${event.title}</div>
+                ${event.location ? `<div class="location"><i class="fas fa-map-marker-alt"></i> ${event.location}</div>` : ''}
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function deleteEventById(eventId) {
+    const eventIndex = events.findIndex(e => e.id === eventId);
+    if (eventIndex !== -1) {
+        const eventTitle = events[eventIndex].title;
+        events.splice(eventIndex, 1);
+        
+        saveEvents();
+        calendar.refetchEvents();
+        updateTodayEvents();
+        
+        showMessage(`"${eventTitle}" 已删除`, 'success');
+    }
+}
+
+// ==================== 视图切换 ====================
+function switchView(viewType) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    const freeTimeContainer = document.getElementById('free-time-container');
+    if (viewType === 'availability') {
+        freeTimeContainer.classList.remove('hidden');
+        findCommonAvailability();
+    } else {
+        freeTimeContainer.classList.add('hidden');
+    }
+    
+    calendar.refetchEvents();
+}
+
+// ==================== 共同空闲时间 ====================
+function findCommonAvailability() {
+    const today = new Date().toISOString().split('T')[0];
+    
+    const exampleSlots = [
+        { start: '10:00', end: '11:30', duration: 90 },
+        { start: '14:00', end: '15:00', duration: 60 },
+        { start: '16:00', end: '17:30', duration: 90 }
+    ];
+    
+    const container = document.getElementById('free-time-slots');
+    container.innerHTML = '';
+    
+    if (exampleSlots.length === 0) {
+        container.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">今天没有共同空闲时间</p>';
+        return;
+    }
+    
+    exampleSlots.forEach(slot => {
+        const slotEl = document.createElement('div');
+        slotEl.className = 'slot-item';
+        slotEl.innerHTML = `
+            <div>
+                <strong>${slot.start} - ${slot.end}</strong>
+                <div style="font-size: 12px; color: #555;">${slot.duration} 分钟可用</div>
+            </div>
+            <button class="btn btn-success" onclick="bookSlot('${slot.start}', '${slot.end}')" 
+                    style="padding: 5px 10px; font-size: 12px;">
+                预定
+            </button>
+        `;
+        container.appendChild(slotEl);
+    });
+}
+
+function bookSlot(start, end) {
+    const today = new Date().toISOString().split('T')[0];
+    
+    document.getElementById('event-date').value = today;
+    document.getElementById('start-time').value = start;
+    document.getElementById('end-time').value = end;
+    document.getElementById('event-user').value = 'both';
+    
+    showEventForm();
+}
+
+// ==================== 分享功能 ====================
+function generateShareLink() {
+    const baseUrl = window.location.origin + window.location.pathname;
+    let cleanUrl = baseUrl;
+    if (cleanUrl.includes('?')) {
+        cleanUrl = cleanUrl.split('?')[0];
+    }
+    
+    const shareUrl = cleanUrl + '?partner';
+    document.getElementById('share-link').value = shareUrl;
+    return shareUrl;
+}
+
+function copyShareLink() {
+    const shareUrl = generateShareLink();
+    
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showMessage('✅ 链接已复制！发送给伙伴即可。', 'success');
+        }).catch(() => {
+            copyFallback(shareUrl);
+        });
+    } else {
+        copyFallback(shareUrl);
+    }
+}
+
+function copyFallback(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showMessage('✅ 链接已复制！发送给伙伴即可。', 'success');
+        } else {
+            prompt('请手动复制链接：', text);
+        }
+    } catch (err) {
+        prompt('请手动复制链接：', text);
+    }
+    
+    document.body.removeChild(textarea);
+}
+
+function sendShareLink() {
+    const shareUrl = generateShareLink();
+    const shareText = `📅 邀请您加入双人共享日历\n\n点击链接即可查看和编辑我们的共享日程：\n${shareUrl}\n\n功能特色：\n• 查看双方日程安排\n• 添加/编辑事件\n• 智能查找共同空闲时间\n• 支持重复事件\n• 设置提醒通知`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: '双人共享日历邀请',
+            text: shareText,
+            url: shareUrl
+        }).catch(() => {
+            copyShareLink();
+        });
+    } else {
+        copyShareLink();
+    }
+}
+
+// ==================== 工具函数 ====================
+function formatTime(date) {
+    if (!(date instanceof Date)) {
+        date = new Date(date);
+    }
+    return date.toTimeString().substring(0, 5);
+}
+
+function showMessage(message, type = 'info') {
+    const existingMessages = document.querySelectorAll('.message');
+    existingMessages.forEach(msg => msg.remove());
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+    messageDiv.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+        <div>${message}</div>
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        messageDiv.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                document.body.removeChild(messageDiv);
+            }
+        }, 300);
+    }, 3000);
+}
+
+function getContrastColor(hexColor) {
+    const r = parseInt(hexColor.substr(1, 2), 16);
+    const g = parseInt(hexColor.substr(3, 2), 16);
+    const b = parseInt(hexColor.substr(5, 2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 128 ? '#000000' : '#ffffff';
+}
+
+function adjustColor(color, amount) {
+    let usePound = false;
+    if (color[0] === "#") {
+        color = color.slice(1);
+        usePound = true;
+    }
+    
+    const num = parseInt(color, 16);
+    let r = (num >> 16) + amount;
+    let g = ((num >> 8) & 0x00FF) + amount;
+    let b = (num & 0x0000FF) + amount;
+    
+    r = r < 0 ? 0 : r > 255 ? 255 : r;
+    g = g < 0 ? 0 : g > 255 ? 255 : g;
+    b = b < 0 ? 0 : b > 255 ? 255 : b;
+    
+    return (usePound ? "#" : "") + (b | (g << 8) | (r << 16)).toString(16).padStart(6, '0');
+}
+
+// ==================== 键盘快捷键 ====================
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        hideEventForm();
+        hideDeleteDialog();
+    }
+    
+    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+        e.preventDefault();
+        showEventForm();
+    }
+});
+
+// ==================== 导出/导入功能 ====================
+function exportEvents() {
+    const dataStr = JSON.stringify(events, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const exportFileDefaultName = '共享日历备份_' + new Date().toISOString().split('T')[0] + '.json';
+    
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+function importEvents() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    
+    input.onchange = function(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+            try {
+                const importedEvents = JSON.parse(event.target.result);
+                events = importedEvents;
                 saveEvents();
                 calendar.refetchEvents();
                 updateTodayEvents();
-                
-                showMessage(`"${eventTitle}" 已删除`, 'success');
-            }
-        }
-
-        // ==================== 视图切换 ====================
-        function switchView(viewType) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const freeTimeContainer = document.getElementById('free-time-container');
-            if (viewType === 'availability') {
-                freeTimeContainer.classList.remove('hidden');
-                findCommonAvailability();
-            } else {
-                freeTimeContainer.classList.add('hidden');
-            }
-            
-            calendar.refetchEvents();
-        }
-
-        // ==================== 共同空闲时间 ====================
-        function findCommonAvailability() {
-            const today = new Date().toISOString().split('T')[0];
-            
-            // 简化示例
-            const exampleSlots = [
-                { start: '10:00', end: '11:30', duration: 90 },
-                { start: '14:00', end: '15:00', duration: 60 },
-                { start: '16:00', end: '17:30', duration: 90 }
-            ];
-            
-            const container = document.getElementById('free-time-slots');
-            container.innerHTML = '';
-            
-            if (exampleSlots.length === 0) {
-                container.innerHTML = '<p style="color: #666; text-align: center; padding: 20px;">今天没有共同空闲时间</p>';
-                return;
-            }
-            
-            exampleSlots.forEach(slot => {
-                const slotEl = document.createElement('div');
-                slotEl.className = 'slot-item';
-                slotEl.innerHTML = `
-                    <div>
-                        <strong>${slot.start} - ${slot.end}</strong>
-                        <div style="font-size: 12px; color: #555;">${slot.duration} 分钟可用</div>
-                    </div>
-                    <button class="btn btn-success" onclick="bookSlot('${slot.start}', '${slot.end}')" 
-                            style="padding: 5px 10px; font-size: 12px;">
-                        预定
-                    </button>
-                `;
-                container.appendChild(slotEl);
-            });
-        }
-
-        function bookSlot(start, end) {
-            const today = new Date().toISOString().split('T')[0];
-            
-            document.getElementById('event-date').value = today;
-            document.getElementById('start-time').value = start;
-            document.getElementById('end-time').value = end;
-            document.getElementById('event-user').value = 'both';
-            
-            showEventForm();
-        }
-
-        // ==================== 分享功能 ====================
-        function generateShareLink() {
-            const baseUrl = window.location.origin + window.location.pathname;
-            let cleanUrl = baseUrl;
-            if (cleanUrl.includes('?')) {
-                cleanUrl = cleanUrl.split('?')[0];
-            }
-            
-            const shareUrl = cleanUrl + '?partner';
-            document.getElementById('share-link').value = shareUrl;
-            return shareUrl;
-        }
-
-        function copyShareLink() {
-            const shareUrl = generateShareLink();
-            
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(shareUrl).then(() => {
-                    showMessage('✅ 链接已复制！发送给伙伴即可。', 'success');
-                }).catch(() => {
-                    copyFallback(shareUrl);
-                });
-            } else {
-                copyFallback(shareUrl);
-            }
-        }
-
-        function copyFallback(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showMessage('✅ 链接已复制！发送给伙伴即可。', 'success');
-                } else {
-                    prompt('请手动复制链接：', text);
-                }
+                scheduleAllReminders();
+                showMessage('事件已导入成功！', 'success');
             } catch (err) {
-                prompt('请手动复制链接：', text);
-            }
-            
-            document.body.removeChild(textarea);
-        }
-
-        function sendShareLink() {
-            const shareUrl = generateShareLink();
-            const shareText = `📅 邀请您加入双人共享日历\n\n点击链接即可查看和编辑我们的共享日程：\n${shareUrl}\n\n功能特色：\n• 查看双方日程安排\n• 添加/编辑事件\n• 智能查找共同空闲时间\n• 支持重复事件\n• 设置提醒通知`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: '双人共享日历邀请',
-                    text: shareText,
-                    url: shareUrl
-                }).catch(() => {
-                    copyShareLink();
-                });
-            } else {
-                copyShareLink();
-            }
-        }
-
-        // ==================== 工具函数 ====================
-        function formatTime(date) {
-            if (!(date instanceof Date)) {
-                date = new Date(date);
-            }
-            return date.toTimeString().substring(0, 5);
-        }
-
-        function showMessage(message, type = 'info') {
-            const existingMessages = document.querySelectorAll('.message');
-            existingMessages.forEach(msg => msg.remove());
-            
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            messageDiv.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
-                <div>${message}</div>
-            `;
-            
-            document.body.appendChild(messageDiv);
-            
-            setTimeout(() => {
-                messageDiv.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    if (messageDiv.parentNode) {
-                        document.body.removeChild(messageDiv);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        function getContrastColor(hexColor) {
-            const r = parseInt(hexColor.substr(1, 2), 16);
-            const g = parseInt(hexColor.substr(3, 2), 16);
-            const b = parseInt(hexColor.substr(5, 2), 16);
-            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-            return brightness > 128 ? '#000000' : '#ffffff';
-        }
-
-        function adjustColor(color, amount) {
-            let usePound = false;
-            if (color[0] === "#") {
-                color = color.slice(1);
-                usePound = true;
-            }
-            
-            const num = parseInt(color, 16);
-            let r = (num >> 16) + amount;
-            let g = ((num >> 8) & 0x00FF) + amount;
-            let b = (num & 0x0000FF) + amount;
-            
-            r = r < 0 ? 0 : r > 255 ? 255 : r;
-            g = g < 0 ? 0 : g > 255 ? 255 : g;
-            b = b < 0 ? 0 : b > 255 ? 255 : b;
-            
-            return (usePound ? "#" : "") + (b | (g << 8) | (r << 16)).toString(16).padStart(6, '0');
-        }
-
-        // ==================== 键盘快捷键 ====================
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                hideEventForm();
-                hideDeleteDialog();
-            }
-            
-            if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
-                e.preventDefault();
-                showEventForm();
-            }
-        });
-
-        // ==================== 导出/导入功能 ====================
-        function exportEvents() {
-            const dataStr = JSON.stringify(events, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            const exportFileDefaultName = '共享日历备份_' + new Date().toISOString().split('T')[0] + '.json';
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-        }
-
-        function importEvents() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    try {
-                        const importedEvents = JSON.parse(event.target.result);
-                        events = importedEvents;
-                        saveEvents();
-                        calendar.refetchEvents();
-                        updateTodayEvents();
-                        scheduleAllReminders();
-                        showMessage('事件已导入成功！', 'success');
-                    } catch (err) {
-                        showMessage('导入失败，文件格式错误', 'warning');
-                    }
-                };
-                
-                reader.readAsText(file);
-            };
-            
-            input.click();
-        }
-
-        // 在控制台暴露有用的函数
-        window.debug = {
-            exportEvents,
-            importEvents,
-            clearAllData: function() {
-                if (confirm('⚠️ 确定要清空所有数据吗？此操作不可撤销！')) {
-                    localStorage.clear();
-                    events = [];
-                    calendar.refetchEvents();
-                    updateTodayEvents();
-                    showMessage('所有数据已清空', 'warning');
-                    location.reload();
-                }
-            },
-            getEvents: () => events,
-            getUser: () => currentUser,
-            showAllEvents: function() {
-                console.table(events.map(e => ({
-                    id: e.id,
-                    title: e.title,
-                    start: e.start,
-                    user: e.user,
-                    type: e.type,
-                    recurring: e.recurrence?.type !== 'none'
-                })));
+                showMessage('导入失败，文件格式错误', 'warning');
             }
         };
+        
+        reader.readAsText(file);
+    };
+    
+    input.click();
+}
 
-        console.log('调试命令可用：debug.exportEvents(), debug.importEvents(), debug.clearAllData()');
-    </script>
+// ==================== 调试工具 ====================
+window.debug = {
+    exportEvents,
+    importEvents,
+    clearAllData: function() {
+        if (confirm('⚠️ 确定要清空所有数据吗？此操作不可撤销！')) {
+            localStorage.clear();
+            events = [];
+            calendar.refetchEvents();
+            updateTodayEvents();
+            showMessage('所有数据已清空', 'warning');
+            location.reload();
+        }
+    },
+    getEvents: () => events,
+    getUser: () => currentUser,
+    showAllEvents: function() {
+        console.table(events.map(e => ({
+            id: e.id,
+            title: e.title,
+            start: e.start,
+            user: e.user,
+            type: e.type,
+            recurring: e.recurrence?.type !== 'none'
+        })));
+    }
+};
+
+console.log('调试命令可用：debug.exportEvents(), debug.importEvents(), debug.clearAllData()');
+</script>
 </body>
 </html>
