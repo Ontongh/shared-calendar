@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* 简洁样式 */
         * {
             margin: 0;
             padding: 0;
@@ -46,6 +45,39 @@
             font-size: 24px;
             font-weight: bold;
             color: #4a6fa5;
+        }
+
+        /* 视图控制样式 */
+        .view-controls {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .view-btn {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: #4a6fa5;
+            color: white;
+            border-color: #4a6fa5;
+        }
+
+        .view-btn:hover {
+            background: #e9ecef;
+        }
+
+        .view-btn.active:hover {
+            background: #166088;
         }
 
         /* 按钮 */
@@ -109,6 +141,35 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
+        /* 视图指示器 */
+        .view-indicator {
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 14px;
+            border-left: 4px solid #4a6fa5;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .view-indicator.creator {
+            border-left-color: #4a6fa5;
+        }
+
+        .view-indicator.partner {
+            border-left-color: #e85d75;
+        }
+
+        .view-indicator.free {
+            border-left-color: #28a745;
+        }
+
+        .view-indicator i {
+            font-size: 18px;
+        }
+
         #calendar {
             height: 600px;
         }
@@ -138,6 +199,16 @@
 
         .event-toolbar button:hover {
             background: #f8f9fa;
+        }
+
+        /* 空闲时间样式 */
+        .free-time-slot {
+            background: rgba(40, 167, 69, 0.1) !important;
+            border: 2px dashed #28a745 !important;
+        }
+
+        .fc-timegrid-slot.free-slot {
+            background: rgba(40, 167, 69, 0.05);
         }
 
         /* 模态框 */
@@ -280,6 +351,23 @@
             color: #dc3545;
         }
 
+        /* 空闲时间结果 */
+        .free-time-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .free-time-result {
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #28a745;
+        }
+
         /* 移动端适配 */
         @media (max-width: 768px) {
             .main-content {
@@ -289,6 +377,12 @@
             .header {
                 flex-direction: column;
                 gap: 15px;
+            }
+
+            .view-controls {
+                margin: 10px 0;
+                width: 100%;
+                justify-content: center;
             }
 
             .modal-content {
@@ -302,6 +396,28 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+
+            input[type="date"] {
+                position: relative;
+            }
+
+            input[type="date"]::before {
+                content: "年/月/日";
+                color: #999;
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                pointer-events: none;
+                z-index: 1;
+                background: white;
+                padding: 0 5px;
+            }
+
+            input[type="date"]:focus::before,
+            input[type="date"]:valid::before {
+                content: "";
+            }
         }
     </style>
 </head>
@@ -313,6 +429,20 @@
             <div class="logo">
                 <i class="fas fa-calendar-alt"></i> 双人共享日历
             </div>
+
+            <!-- 视图切换按钮 -->
+            <div class="view-controls">
+                <button class="btn view-btn active" onclick="switchView('creator')">
+                    <i class="fas fa-user"></i> 赵世斌视图
+                </button>
+                <button class="btn view-btn" onclick="switchView('partner')">
+                    <i class="fas fa-user-friends"></i> 吴静怡视图
+                </button>
+                <button class="btn view-btn" onclick="switchView('free')">
+                    <i class="fas fa-clock"></i> 空闲时间
+                </button>
+            </div>
+
             <button class="btn btn-primary" onclick="showEventModal()">
                 <i class="fas fa-plus"></i> 添加事件
             </button>
@@ -322,11 +452,11 @@
         <div class="user-badges">
             <div class="user-badge">
                 <div class="user-color" style="background: #4a6fa5;"></div>
-                <span id="user1-name">我</span>
+                <span id="user1-name">赵世斌</span>
             </div>
             <div class="user-badge">
                 <div class="user-color" style="background: #e85d75;"></div>
-                <span id="user2-name">伙伴</span>
+                <span id="user2-name">吴静怡</span>
             </div>
         </div>
 
@@ -336,6 +466,12 @@
             <aside class="sidebar">
                 <h3><i class="fas fa-tasks"></i> 今日日程</h3>
                 <div id="today-events">今天没有安排</div>
+
+                <!-- 空闲时间结果 -->
+                <div id="free-time-results" class="free-time-results">
+                    <h4><i class="fas fa-clock"></i> 今日共同空闲时间</h4>
+                    <div id="free-time-list"></div>
+                </div>
 
                 <div style="margin-top: 30px;">
                     <h3><i class="fas fa-share-alt"></i> 邀请伙伴</h3>
@@ -364,6 +500,12 @@
 
             <!-- 日历主体 -->
             <main class="calendar-container">
+                <!-- 视图指示器 -->
+                <div id="view-indicator" class="view-indicator creator">
+                    <i class="fas fa-user"></i>
+                    <span id="view-indicator-text">当前视图：赵世斌视图 - 显示赵世斌的所有事件</span>
+                </div>
+
                 <div id="calendar"></div>
             </main>
         </div>
@@ -393,7 +535,13 @@
 
                 <div class="form-group">
                     <label for="event-date">日期 *</label>
-                    <input type="date" id="event-date" class="form-control" required>
+                    <div style="position: relative;">
+                        <input type="text" id="event-date-display" class="form-control" placeholder="年/月/日" readonly
+                            style="text-align: center;">
+                        <input type="date" id="event-date" style="display: none;">
+                        <i class="fas fa-calendar-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+              cursor: pointer; color: #4a6fa5;" onclick="showDatePicker('event-date')"></i>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -462,10 +610,20 @@
                         </div>
                         <div>
                             <input type="radio" name="repeat-end" id="repeat-date">
-                            <label for="repeat-date" style="display: inline;">
-                                直到 <input type="date" id="repeat-end-date" class="form-control"
-                                    style="width: 150px; display: inline;">
-                            </label>
+                            <div>
+                                <input type="radio" name="repeat-end" id="repeat-date">
+                                <label for="repeat-date" style="display: inline;">
+                                    直到
+                                    <div style="display: inline-block; position: relative;">
+                                        <input type="text" id="repeat-end-date-display" class="form-control"
+                                            style="width: 150px; display: inline; text-align: center;"
+                                            placeholder="年/月/日" readonly>
+                                        <input type="date" id="repeat-end-date" style="display: none;">
+                                        <i class="fas fa-calendar-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); 
+                      cursor: pointer; color: #4a6fa5;" onclick="showDatePicker('repeat-end-date')"></i>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -535,6 +693,7 @@
         let calendar;
         let events = [];
         let currentUser = 'user1'; // 默认创建者
+        let currentView = 'creator'; // 当前视图：creator, partner, free
         let editingEventId = null;
         let eventToDelete = null;
         let currentEventForToolbar = null;
@@ -556,9 +715,25 @@
             updateTodayEvents();
 
             // 5. 设置表单默认日期
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('event-date').value = today;
-            document.getElementById('repeat-end-date').value = getDateOneMonthLater();
+            // 设置默认日期显示
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+
+            // 设置事件日期
+            document.getElementById('event-date').value = `${year}-${month}-${day}`;
+            document.getElementById('event-date-display').value = `${year}年${month}月${day}日`;
+
+            // 设置重复结束日期（一个月后）
+            const nextMonth = new Date();
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            const nextYear = nextMonth.getFullYear();
+            const nextMonthNum = String(nextMonth.getMonth() + 1).padStart(2, '0');
+            const nextDay = String(nextMonth.getDate()).padStart(2, '0');
+
+            document.getElementById('repeat-end-date').value = `${nextYear}-${nextMonthNum}-${nextDay}`;
+            document.getElementById('repeat-end-date-display').value = `${nextYear}年${nextMonthNum}月${nextDay}日`;
 
             // 6. 生成分享链接
             generateShareLink();
@@ -582,13 +757,121 @@
             if (urlParams.has('partner')) {
                 currentUser = 'user2';
                 localStorage.setItem('isPartner', 'true');
-                document.getElementById('user1-name').textContent = '赵世斌';
+                document.getElementById('user1-name').textContent = '创建者';
                 document.getElementById('user2-name').textContent = '我';
             } else {
                 currentUser = 'user1';
                 localStorage.removeItem('isPartner');
                 document.getElementById('user1-name').textContent = '我';
-                document.getElementById('user2-name').textContent = '吴静怡';
+                document.getElementById('user2-name').textContent = '伙伴';
+            }
+        }
+
+        // ==================== 自定义日期选择器 ====================
+        function showDatePicker(dateFieldId) {
+            // 创建隐藏的日期输入框
+            const tempInput = document.createElement('input');
+            tempInput.type = 'date';
+            tempInput.style.position = 'fixed';
+            tempInput.style.left = '-1000px';
+            tempInput.style.top = '-1000px';
+
+            // 设置当前值
+            const realInput = document.getElementById(dateFieldId);
+            const displayInput = document.getElementById(dateFieldId + '-display');
+
+            if (realInput.value) {
+                tempInput.value = realInput.value;
+            }
+
+            // 添加事件监听
+            tempInput.addEventListener('change', function () {
+                if (this.value) {
+                    // 保存到真实输入框
+                    realInput.value = this.value;
+
+                    // 格式化显示
+                    const date = new Date(this.value);
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+
+                    displayInput.value = `${year}年${month}月${day}日`;
+
+                    // 改变样式表示已选择
+                    displayInput.style.color = '#333';
+                    displayInput.style.fontWeight = 'normal';
+                }
+
+                // 移除临时输入框
+                document.body.removeChild(this);
+            });
+
+            // 添加到页面并触发点击
+            document.body.appendChild(tempInput);
+            tempInput.focus();
+            tempInput.showPicker ? tempInput.showPicker() : tempInput.click();
+        }
+
+
+        // ==================== 视图切换功能 ====================
+        function switchView(viewType) {
+            currentView = viewType;
+
+            // 更新按钮状态
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // 激活当前视图按钮
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                if (btn.textContent.includes(getViewTitle(viewType))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // 更新视图指示器
+            const indicator = document.getElementById('view-indicator');
+            const indicatorText = document.getElementById('view-indicator-text');
+
+            // 移除所有类
+            indicator.className = 'view-indicator';
+
+            switch (viewType) {
+                case 'creator':
+                    indicator.classList.add('creator');
+                    indicatorText.textContent = currentUser === 'user1'
+                        ? '当前视图：赵世斌视图 - 显示赵世斌的所有事件'
+                        : '当前视图：赵世斌视图 - 显示赵世斌的所有事件';
+                    document.getElementById('free-time-results').style.display = 'none';
+                    break;
+
+                case 'partner':
+                    indicator.classList.add('partner');
+                    indicatorText.textContent = currentUser === 'user1'
+                        ? '当前视图：吴静怡视图 - 显示吴静怡的所有事件'
+                        : '当前视图：赵世斌视图 - 显示赵世斌的所有事件';
+                    document.getElementById('free-time-results').style.display = 'none';
+                    break;
+
+                case 'free':
+                    indicator.classList.add('free');
+                    indicatorText.textContent = '当前视图：空闲时间 - 显示双方的共同空闲时间';
+                    document.getElementById('free-time-results').style.display = 'block';
+                    calculateAndDisplayFreeTime();
+                    break;
+            }
+
+            // 重新渲染日历
+            calendar.refetchEvents();
+        }
+
+        function getViewTitle(viewType) {
+            switch (viewType) {
+                case 'creator': return '赵世斌';
+                case 'partner': return '吴静怡';
+                case 'free': return '空闲时间';
+                default: return '我的视图';
             }
         }
 
@@ -604,8 +887,8 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 locale: 'zh-cn',
-                slotMinTime: '08:00',
-                slotMaxTime: '22:00',
+                slotMinTime: '00:00',
+                slotMaxTime: '24:00',
                 allDaySlot: false,
                 editable: true,
                 selectable: true,
@@ -620,19 +903,26 @@
 
                 // 点击事件
                 eventClick: function (info) {
-                    // 存储当前点击的事件信息
                     currentEventForToolbar = {
                         id: info.event.id,
                         jsEvent: info.jsEvent,
                         event: info.event
                     };
 
-                    // 显示工具条
                     showEventToolbar(info.jsEvent);
 
                     // 阻止默认行为
                     info.jsEvent.preventDefault();
-                    info.jsEvent.stopPropagation(); // 添加这一行
+                    info.jsEvent.stopPropagation();
+                },
+
+                // 鼠标悬停事件
+                eventMouseEnter: function (info) {
+                    info.el.style.cursor = 'pointer';
+                },
+
+                eventMouseLeave: function (info) {
+                    info.el.style.cursor = 'default';
                 },
 
                 // 拖拽事件
@@ -684,7 +974,49 @@
 
                 // 加载事件到日历
                 events: function (fetchInfo, successCallback) {
-                    const filteredEvents = events.map(event => ({
+                    let filteredEvents;
+
+                    // 根据当前视图过滤事件
+                    switch (currentView) {
+                        case 'creator':
+                            // 显示我的事件和双方事件
+                            if (currentUser === 'user1') {
+                                filteredEvents = events.filter(event =>
+                                    event.user === 'user1' || event.user === 'both'
+                                );
+                            } else {
+                                // 如果是伙伴身份，显示创建者的事件
+                                filteredEvents = events.filter(event =>
+                                    event.user === 'user1' || event.user === 'both'
+                                );
+                            }
+                            break;
+
+                        case 'partner':
+                            // 显示伙伴的事件和双方事件
+                            if (currentUser === 'user1') {
+                                filteredEvents = events.filter(event =>
+                                    event.user === 'user2' || event.user === 'both'
+                                );
+                            } else {
+                                // 如果是伙伴身份，显示自己的事件
+                                filteredEvents = events.filter(event =>
+                                    event.user === 'user2' || event.user === 'both'
+                                );
+                            }
+                            break;
+
+                        case 'free':
+                            // 空闲时间视图，先显示所有事件
+                            filteredEvents = events;
+                            break;
+
+                        default:
+                            filteredEvents = events;
+                    }
+
+                    // 转换为FullCalendar事件格式
+                    const calendarEvents = filteredEvents.map(event => ({
                         id: event.id,
                         title: event.title + (event.location ? ` (${event.location})` : ''),
                         start: event.start,
@@ -692,11 +1024,27 @@
                         color: getEventColor(event.user),
                         extendedProps: {
                             parentId: event.parentId,
-                            isRecurring: event.parentId || (event.repeat && event.repeat.type !== 'none')
+                            isRecurring: event.parentId || (event.repeat && event.repeat.type !== 'none'),
+                            user: event.user
                         }
                     }));
 
-                    successCallback(filteredEvents);
+                    successCallback(calendarEvents);
+                },
+
+                // 空闲时间视图的特殊处理
+                eventDidMount: function (info) {
+                    if (currentView === 'free') {
+                        // 为事件添加特殊的类
+                        const user = info.event.extendedProps.user;
+                        if (user === 'user1' && currentUser === 'user1') {
+                            info.el.style.opacity = '0.7';
+                            info.el.style.borderLeft = '4px solid #4a6fa5';
+                        } else if (user === 'user2' && currentUser === 'user2') {
+                            info.el.style.opacity = '0.7';
+                            info.el.style.borderLeft = '4px solid #e85d75';
+                        }
+                    }
                 }
             });
 
@@ -707,6 +1055,131 @@
             if (user === 'user1') return '#4a6fa5';
             if (user === 'user2') return '#e85d75';
             return '#6c5ce7'; // 双方
+        }
+
+        // ==================== 计算空闲时间 ====================
+        function calculateAndDisplayFreeTime() {
+            const today = new Date();
+            const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0); // 8:00开始
+            const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 24, 0, 0); // 22:00结束
+
+            // 获取今天的双方事件
+            const todayEvents = events.filter(event => {
+                const eventDate = new Date(event.start).toDateString();
+                return eventDate === today.toDateString() &&
+                    (event.user === 'both' ||
+                        (currentUser === 'user1' && event.user === 'user1') ||
+                        (currentUser === 'user2' && event.user === 'user2'));
+            }).sort((a, b) => new Date(a.start) - new Date(b.start));
+
+            // 计算繁忙时间段
+            const busySlots = [];
+            todayEvents.forEach(event => {
+                busySlots.push({
+                    start: new Date(event.start),
+                    end: new Date(event.end)
+                });
+            });
+
+            // 合并重叠的繁忙时间段
+            const mergedBusySlots = mergeTimeSlots(busySlots);
+
+            // 计算空闲时间段
+            const freeSlots = [];
+            let currentTime = startOfDay;
+
+            mergedBusySlots.forEach(slot => {
+                if (currentTime < slot.start) {
+                    freeSlots.push({
+                        start: new Date(currentTime),
+                        end: new Date(slot.start)
+                    });
+                }
+                currentTime = slot.end > currentTime ? slot.end : currentTime;
+            });
+
+            // 检查最后一段空闲时间
+            if (currentTime < endOfDay) {
+                freeSlots.push({
+                    start: new Date(currentTime),
+                    end: new Date(endOfDay)
+                });
+            }
+
+            // 过滤掉太短的时间段（小于15分钟）
+            const meaningfulFreeSlots = freeSlots.filter(slot => {
+                const duration = (slot.end - slot.start) / (1000 * 60); // 分钟
+                return duration >= 15;
+            });
+
+            // 显示空闲时间
+            displayFreeTime(meaningfulFreeSlots);
+        }
+
+        function mergeTimeSlots(slots) {
+            if (slots.length === 0) return [];
+
+            // 按开始时间排序
+            slots.sort((a, b) => a.start - b.start);
+
+            const merged = [];
+            let current = { ...slots[0] };
+
+            for (let i = 1; i < slots.length; i++) {
+                const slot = slots[i];
+
+                if (slot.start <= current.end) {
+                    // 时间段重叠，合并
+                    current.end = slot.end > current.end ? slot.end : current.end;
+                } else {
+                    // 不重叠，保存当前时间段
+                    merged.push({ ...current });
+                    current = { ...slot };
+                }
+            }
+
+            merged.push(current);
+            return merged;
+        }
+
+        function displayFreeTime(freeSlots) {
+            const container = document.getElementById('free-time-list');
+
+            if (freeSlots.length === 0) {
+                container.innerHTML = '<p>今天没有共同空闲时间</p>';
+                return;
+            }
+
+            let html = '';
+            freeSlots.forEach((slot, index) => {
+                const startTime = slot.start.toTimeString().substr(0, 5);
+                const endTime = slot.end.toTimeString().substr(0, 5);
+                const duration = Math.round((slot.end - slot.start) / (1000 * 60)); // 分钟
+
+                html += `
+                    <div class="free-time-result">
+                        <div style="font-weight: bold; color: #28a745;">
+                            <i class="fas fa-clock"></i> ${startTime} - ${endTime}
+                        </div>
+                        <div>空闲时长：${duration}分钟</div>
+                        <button class="btn btn-primary" onclick="scheduleInFreeTime('${startTime}', '${endTime}')" 
+                                style="margin-top: 8px; padding: 5px 10px; font-size: 12px;">
+                            <i class="fas fa-plus"></i> 在此安排
+                        </button>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function scheduleInFreeTime(startTime, endTime) {
+            showEventModal();
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('event-date').value = today;
+            document.getElementById('start-time').value = startTime;
+            document.getElementById('end-time').value = endTime;
+            document.getElementById('event-user').value = 'both';
         }
 
         // ==================== 事件工具条 ====================
@@ -733,15 +1206,14 @@
             }
         }
 
-        document.addEventListener('click', function (event) {
+        function hideEventToolbar(event) {
             const toolbar = document.getElementById('event-toolbar');
             if (toolbar && toolbar.style.display === 'block') {
-                // 如果点击的不是工具条本身
                 if (!toolbar.contains(event.target)) {
                     toolbar.style.display = 'none';
                 }
             }
-        });
+        }
 
         function editEventFromToolbar() {
             if (!currentEventForToolbar) return;
@@ -960,8 +1432,13 @@
             saveEvents();
             calendar.refetchEvents();
             updateTodayEvents();
-            hideEventModal();
 
+            // 如果当前是空闲时间视图，重新计算空闲时间
+            if (currentView === 'free') {
+                calculateAndDisplayFreeTime();
+            }
+
+            hideEventModal();
             alert('事件已保存');
         }
 
@@ -1164,6 +1641,11 @@
             // 更新今日事件
             updateTodayEvents();
 
+            // 如果当前是空闲时间视图，重新计算空闲时间
+            if (currentView === 'free') {
+                calculateAndDisplayFreeTime();
+            }
+
             hideDeleteModal();
             alert('事件已删除');
         }
@@ -1199,20 +1681,24 @@
                 const endTime = new Date(event.end).toTimeString().substr(0, 5);
                 const isRecurring = event.parentId || (event.repeat && event.repeat.type !== 'none');
                 const isModified = event.isModifiedRecurring;
+                const userBadge = event.user === 'user1' ?
+                    '<span style="background: #4a6fa5; color: white; padding: 2px 6px; border-radius: 3px; font-size: 12px;">我</span>' :
+                    event.user === 'user2' ?
+                        '<span style="background: #e85d75; color: white; padding: 2px 6px; border-radius: 3px; font-size: 12px;">伙伴</span>' :
+                        '<span style="background: #6c5ce7; color: white; padding: 2px 6px; border-radius: 3px; font-size: 12px;">双方</span>';
 
                 html += `
                     <div class="today-event">
                         <div style="padding-right: 70px;">
-                            <div style="font-weight: bold; color: #4a6fa5;">
-                                ${startTime} - ${endTime}
-                                ${isRecurring ? ' <i class="fas fa-redo" style="color: #28a745; font-size: 12px;"></i>' : ''}
-                                ${isModified ? ' <i class="fas fa-exclamation-triangle" style="color: #ffc107; font-size: 12px;"></i>' : ''}
+                            <div style="font-weight: bold; color: #4a6fa5; display: flex; justify-content: space-between; align-items: center;">
+                                <span>${startTime} - ${endTime}</span>
+                                ${userBadge}
                             </div>
                             <div style="font-weight: bold; margin: 5px 0;">${event.title}</div>
                             ${event.location ? `<div style="font-size: 12px; color: #666; margin-bottom: 5px;">📍 ${event.location}</div>` : ''}
                             <div style="font-size: 12px; color: #888;">
-                                ${event.user === 'user1' ? '仅我' : event.user === 'user2' ? '仅伙伴' : '双方'}参与
-                                ${event.updatedAt ? ' · 已更新' : ''}
+                                ${isRecurring ? '<i class="fas fa-redo" style="color: #28a745;"></i> 重复事件 ' : ''}
+                                ${isModified ? '<i class="fas fa-exclamation-triangle" style="color: #ffc107;"></i> 已修改 ' : ''}
                             </div>
                         </div>
                         <div class="today-event-actions">
@@ -1273,10 +1759,12 @@
             calendar.refetchEvents();
             updateTodayEvents();
 
+            // 重置视图
+            switchView('creator');
+
             alert('所有数据已清空');
         }
     </script>
 </body>
-
 
 </html>
