@@ -757,13 +757,13 @@
             if (urlParams.has('partner')) {
                 currentUser = 'user2';
                 localStorage.setItem('isPartner', 'true');
-                document.getElementById('user1-name').textContent = '创建者';
+                document.getElementById('user1-name').textContent = '赵世斌';
                 document.getElementById('user2-name').textContent = '我';
             } else {
                 currentUser = 'user1';
                 localStorage.removeItem('isPartner');
                 document.getElementById('user1-name').textContent = '我';
-                document.getElementById('user2-name').textContent = '伙伴';
+                document.getElementById('user2-name').textContent = '吴静怡';
             }
         }
 
